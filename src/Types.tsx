@@ -13,6 +13,7 @@ export interface UserInterface {
   id: string;
   email: string;
   userRole: string;
+  isEnable: boolean;
 }
 
 export interface ProductInterface {

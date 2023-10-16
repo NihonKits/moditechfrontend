@@ -28,7 +28,7 @@ const Registration = ({ toggleRegistrationModal }: any) => {
   const sendEmail = async () => {
     try {
       await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/api/email/sendEmail/${
+        `${import.meta.env.VITE_APP_BASE_URL}/api/email/sendEmail/${
           registrationInfo.email
         }`
       );
@@ -115,7 +115,11 @@ const Registration = ({ toggleRegistrationModal }: any) => {
         </span>
       )}
       <div className="register-btns">
-        <button className="register-button" onClick={handleSubmit}>
+        <button
+          className="register-button"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
           {loading ? "Please wait..." : "Register"}
         </button>
         <button
