@@ -19,6 +19,7 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
     quantity: 0,
     price: 0,
   });
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -32,6 +33,7 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const data = new FormData();
       data.append("file", ImageFile);
@@ -51,6 +53,7 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
           productImage: url,
         }
       );
+      setLoading(false);
       //   toast.success("Sucessfully added product!", {
       //     position: "bottom-center",
       //     autoClose: 2000,
@@ -60,23 +63,21 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
       //     draggable: true,
       //     progress: undefined,
       //   });
+
       setTimeout(() => {
         window.location.reload();
       }, 2000);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
-
-  console.log(addProductInfo);
 
   const fileTypeChecking = (e: any) => {
     var fileInput = document.getElementById("file-upload") as HTMLInputElement;
     var filePath = fileInput.value;
 
-    // Allowing file type
     var allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
-    // |\.pdf|\.tex|\.txt|\.rtf|\.wps|\.wks|\.wpd
 
     if (!allowedExtensions.exec(filePath)) {
       alert("Invalid file type");
@@ -127,35 +128,6 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
             />
           </label>
         </div>
-        {/* <div className="addproduct-item-list" style={{ width: "50%" }}>
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              height: "63px",
-            }}
-          >
-            Category
-            <select
-              className="addproduct-input"
-              name="categoryId"
-              defaultValue={addProductInfo.category}
-              onChange={(e) => {
-                setAddProductInfo((data) => ({
-                  ...data,
-                  category: e.target.value,
-                }));
-              }}
-            >
-              <option value="">please select category</option>
-              {data?.map((item, index) => (
-                <option value={item.id} key={index}>
-                  {item.categoryName}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div> */}
       </section>
 
       <section className="addproduct-item-list" style={{ width: "100%" }}>
@@ -220,7 +192,7 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
           <Close /> Close
         </button>
         <button className="addproduct-btn submit" onClick={handleSubmit}>
-          <Check /> Submit
+          <Check /> {loading ? "Please wait" : "Submit"}
         </button>
       </div>
     </div>

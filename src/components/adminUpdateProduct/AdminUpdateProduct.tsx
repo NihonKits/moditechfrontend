@@ -17,11 +17,10 @@ const AdminUpdateProduct = ({
   const [imageFile, setImageFile] = useState<string>("");
   const [singleProductData, setSingleProductData] =
     useState<ProductInterface>();
+  const [loading, setLoading] = useState<boolean>(false);
   // const [categoryDropDown, setCategoryDropDown] = useState<CategoryInterface[]>(
   //   []
   // );
-
-  console.log("eto ung param id", paramsId);
 
   useEffect(() => {
     const fetch = async () => {
@@ -89,6 +88,7 @@ const AdminUpdateProduct = ({
   };
 
   const handleUpdateProduct = async (e: any) => {
+    setLoading(true);
     e.preventDefault();
     try {
       if (imageFile !== "") {
@@ -127,7 +127,7 @@ const AdminUpdateProduct = ({
           }
         );
       }
-
+      setLoading(false);
       toast(" Successfully updated the product!", {
         type: "success",
         position: "bottom-left",
@@ -139,7 +139,9 @@ const AdminUpdateProduct = ({
         progress: undefined,
       });
       setTimeout(() => window.location.reload(), 2000);
-    } catch (err) {}
+    } catch (err) {
+      setLoading(false);
+    }
   };
 
   return (
@@ -284,7 +286,7 @@ const AdminUpdateProduct = ({
           <Close /> Close
         </button>
         <button className="addproduct-btn submit" onClick={handleUpdateProduct}>
-          <Check /> Submit
+          <Check /> {loading ? "Please wait" : "Submit"}
         </button>
       </div>
     </div>

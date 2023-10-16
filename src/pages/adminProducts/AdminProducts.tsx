@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { useQuery } from "react-query";
-import { ProductInterface, Transition } from "../../Types";
+import { ProductInterface } from "../../Types";
 import axios from "axios";
 import { useState } from "react";
 import AdminAddProduct from "../../components/adminAddProduct/AdminAddProduct";
@@ -130,12 +130,7 @@ const AdminProducts = () => {
                     Delete
                   </button>
                 </TableCell>
-                <Dialog
-                  open={openUpdate}
-                  onClose={toggleCloseUpdate}
-                  TransitionComponent={Transition}
-                  keepMounted
-                >
+                <Dialog open={openUpdate} onClose={toggleCloseUpdate}>
                   <DialogContent>
                     <AdminUpdateProduct
                       toggleModalUpdateProduct={toggleCloseUpdate}
