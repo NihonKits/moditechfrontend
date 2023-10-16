@@ -1,0 +1,25 @@
+.admin-order-btn {
+  padding: 15px 20px;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.admin-order-table {
+  border: 1px solid black;
+}
+
+.admin-order-table-header {
+  background-color: #ececfb;
+}
+
+.admin-order-header-table-row,
+.table-header {
+  border: 0.5px solid rgb(202, 202, 202);
+}
+
+.admin-order-table-body-row:nth-child(even) {
+  background-color: #f2f2f2;
+}

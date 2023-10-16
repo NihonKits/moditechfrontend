@@ -1,0 +1,88 @@
+.nav {
+  width: 100vw;
+  height: 80px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: -3px 10px 5px -6px rgba(0, 0, 0, 0.55);
+  -webkit-box-shadow: -3px 10px 5px -6px rgba(0, 0, 0, 0.55);
+  -moz-box-shadow: -3px 10px 5px -6px rgba(0, 0, 0, 0.55);
+}
+
+.nav-container {
+  max-width: 1100px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  width: 83px;
+  height: auto;
+}
+
+.nav-link-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+.nav-action-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.navbar-user-logout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.navbar-user-logout-container button {
+  width: 100px;
+  cursor: pointer;
+}
+
+.nav-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Add this CSS to style the dropdown */
+.nav-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content span {
+  padding: 10px 20px;
+  display: block;
+  color: black;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dropdown-content span:hover {
+  background-color: #f2f2f2;
+}
