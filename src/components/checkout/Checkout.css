@@ -40,3 +40,29 @@
 .checkout-btn {
   cursor: pointer;
 }
+
+/*  */
+
+.shipping-modal {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  flex-direction: column;
+}
+
+.shipping-btn-close {
+  position: absolute;
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.qrImage {
+  height: 400px;
+  width: auto;
+  object-fit: contain;
+}

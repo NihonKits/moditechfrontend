@@ -1,6 +1,6 @@
 import "./Login.css";
-import { LoginInterface, Transition, UserInterface } from "../../Types";
-import { useEffect, useState } from "react";
+import { LoginInterface, Transition } from "../../Types";
+import { useState } from "react";
 import axios from "axios";
 import Registration from "../registration/Registration";
 import useAuthStore from "../../zustand/AuthStore";
@@ -21,7 +21,6 @@ const Login = () => {
   const [errors, setErrors] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [userData, setUserData] = useState<UserInterface>();
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
@@ -31,28 +30,14 @@ const Login = () => {
     }));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/api/user/${credentials.email}`
-      );
-      setUserData(response.data);
-    };
-    fetchData();
-  }, [credentials.email]);
-
   const toggleIsOpen = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: any) => {
+    event.preventDefault();
     setLoading(true);
     try {
-      if (userData?.isEnable === false) {
-        setLoading(false);
-        return alert("Please verify your account in your email first");
-      }
-
       await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/api/user/login`,
         credentials

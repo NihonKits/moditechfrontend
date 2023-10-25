@@ -115,11 +115,7 @@ const Registration = ({ toggleRegistrationModal }: any) => {
         </span>
       )}
       <div className="register-btns">
-        <button
-          className="register-button"
-          onClick={handleSubmit}
-          disabled={loading}
-        >
+        <button className="register-button" onClick={handleSubmit}>
           {loading ? "Please wait..." : "Register"}
         </button>
         <button

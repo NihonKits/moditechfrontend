@@ -4,6 +4,12 @@ import { IndeterminateCheckBox, AddBox } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import axios from "axios";
 import useAuthStore from "../../zustand/AuthStore";
+import { Dialog, DialogContent } from "@mui/material";
+import { useState } from "react";
+
+import gcash from "../../assets/gcash.jpg";
+import bpi from "../../assets/bpi.jpg";
+import bdo from "../../assets/bdo.jpg";
 
 const Checkout = () => {
   const user = useAuthStore((state) => state.user);
@@ -12,6 +18,15 @@ const Checkout = () => {
   const increaseItem = useCartStore((state) => state.increaseItem);
   const decreaseItem = useCartStore((state) => state.decreaseItem);
   const total = useCartStore((state) => state.total);
+
+  const [selectedModePayment, setSelectedModePayment] =
+    useState<string>("gcash");
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleCloseBtn = () => {
+    setOpen(false);
+    window.location.reload();
+  };
 
   const itemsToString = JSON.stringify(items);
 
@@ -22,7 +37,7 @@ const Checkout = () => {
         quantity: product.quantity,
       })),
       email: user,
-      // userFullName: data?.name,
+
       totalPrice: total,
       orderList: itemsToString,
       status: "Pending",
@@ -38,15 +53,15 @@ const Checkout = () => {
       toast("Successfully ordered!", {
         type: "success",
         position: "bottom-left",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: true,
         progress: undefined,
       });
       setTimeout(() => {
-        window.location.reload();
-      }, 5000);
+        setOpen(true);
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -109,13 +124,46 @@ const Checkout = () => {
       <h1>
         TOTAL PRICE: <b>{total}</b>
       </h1>
-      <button
-        disabled={total === 0}
-        className="checkout-btn"
-        onClick={handlePlaceOrder}
-      >
-        Checkout
-      </button>
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <select
+          className="mode-of-payment"
+          style={{ padding: "10px" }}
+          onChange={(e) => setSelectedModePayment(e.target.value)}
+        >
+          <option value="gcash">GCash</option>
+          <option value="bpi">BPI</option>
+          <option value="bdo">BDO</option>
+        </select>
+        <button
+          disabled={total === 0}
+          className="checkout-btn"
+          style={{ padding: "10px" }}
+          onClick={handlePlaceOrder}
+        >
+          Checkout
+        </button>
+      </div>
+      <Dialog open={open} onClose={handleCloseBtn}>
+        <DialogContent>
+          <div className="shipping-modal">
+            <button className="shipping-btn-close" onClick={handleCloseBtn}>
+              x
+            </button>
+            {selectedModePayment === "gcash" && (
+              <img src={gcash} alt="" className="qrImage" />
+            )}
+            {selectedModePayment === "bpi" && (
+              <img src={bpi} alt="" className="qrImage" />
+            )}
+            {selectedModePayment === "bdo" && (
+              <img src={bdo} alt="" className="qrImage" />
+            )}
+            <span style={{ fontSize: "20px" }}>
+              Please scan it or save it before closing.
+            </span>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

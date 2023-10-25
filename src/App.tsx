@@ -7,6 +7,7 @@ import Navbar from "./components/navbar/Navbar";
 import AdminOrders from "./pages/adminOrders/AdminOrders";
 import AdminViewOrders from "./components/adminViewProduct/AdminViewOrders";
 import AdminDashboard from "./pages/adminDashboard/AdminDashboard";
+import ClientOrders from "./pages/clientOrders/ClientOrders";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<ClientHome />} />
+        <Route path="/client/orders" element={<ClientOrders />} />
         {/* admin */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/products" element={<AdminProducts />} />

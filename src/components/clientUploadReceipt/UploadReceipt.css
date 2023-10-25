@@ -1,0 +1,53 @@
+.receipt-modal-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.receipt-input-image {
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+  width: 300px;
+  padding: 10px;
+  border: 1px dashed black;
+  margin-top: 10px;
+}
+
+.receipt-image {
+  width: auto;
+  height: 150px;
+  object-fit: contain;
+  float: left;
+}
+
+.receipt-btn-container {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-receipt-submitbtn {
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  width: 300px;
+  background-color: #89cb45;
+}
+
+.upload-receipt-closebtn {
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  width: 300px;
+  background-color: black;
+}

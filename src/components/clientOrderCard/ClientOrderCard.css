@@ -1,0 +1,36 @@
+.ordercard {
+  width: 100%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  background-color: #ffff;
+}
+
+.ordercard-container {
+  width: 550px;
+  height: 250px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  padding-left: 30px;
+}
+
+.ordercard-info-container {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.orderlist-image {
+  width: 200px;
+  height: auto;
+}
+
+.ordercard-uploadbtn {
+  border: none;
+  background-color: #89cb45;
+  color: #ffff;
+  padding: 5px 10px;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+}

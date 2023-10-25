@@ -94,6 +94,11 @@ const Navbar = () => {
               )}
             </div>
           )}
+          {/* {userData?.userRole === "ROLE_USER" && ( */}
+          <Link style={{ textDecoration: "none" }} to="/client/orders">
+            <span className="nav-link">ORDERS</span>
+          </Link>
+          {/* )} */}
         </section>
         <section className="nav-action-container">
           {user ? (
