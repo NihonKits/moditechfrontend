@@ -7,6 +7,8 @@ import {
   query,
   orderBy,
   onSnapshot,
+  doc,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "../../FirebaseConfig";
 import useAuthStore from "../../zustand/AuthStore";
@@ -28,6 +30,8 @@ const FloatingChatWidget = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const chatCollectionRef = collection(db, `conversation/${user}/messages`);
+
+  // const chatCollectionRef = collection(db, `conversation` || user);
 
   useEffect(() => {
     const userQuery = query(chatCollectionRef, orderBy("createdAt", "asc"));
@@ -59,7 +63,11 @@ const FloatingChatWidget = () => {
       createdAt: new Date(),
     };
 
+    const frankDocRef = doc(db, "conversation", user || "");
+
     try {
+      await setDoc(frankDocRef, {});
+
       await addDoc(chatCollectionRef, {
         ...message,
         name: user,
