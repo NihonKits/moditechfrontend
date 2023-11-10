@@ -90,6 +90,12 @@ const Navbar = () => {
                   <Link style={{ textDecoration: "none" }} to="/admin/orders">
                     <span>ORDER MANAGEMENT</span>
                   </Link>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to="/admin/chat-support"
+                  >
+                    <span>CHAT SUPPORT MANAGEMENT</span>
+                  </Link>
                 </div>
               )}
             </div>

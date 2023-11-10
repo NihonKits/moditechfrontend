@@ -53,6 +53,21 @@ export interface ITopFiveCustomerInterface {
   orderCount: number;
 }
 
+export interface ConversationInterface {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: Date;
+}
+
+export interface IMessage {
+  id: string;
+  name: string;
+  message: string;
+  isUser: boolean;
+  createdAt: Date;
+}
+
 // reusable transition effect only
 import React from "react";
 import { TransitionProps } from "@mui/material/transitions";

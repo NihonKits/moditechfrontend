@@ -8,11 +8,14 @@ import AdminOrders from "./pages/adminOrders/AdminOrders";
 import AdminViewOrders from "./components/adminViewProduct/AdminViewOrders";
 import AdminDashboard from "./pages/adminDashboard/AdminDashboard";
 import ClientOrders from "./pages/clientOrders/ClientOrders";
+import FloatingChatWidget from "./components/chat/FloatingChatWidget";
+import AdminSupport from "./pages/adminSupport/AdminSupport";
 
 function App() {
   return (
     <>
       <Navbar />
+      <FloatingChatWidget />
       <Routes>
         <Route path="/" element={<ClientHome />} />
         <Route path="/client/orders" element={<ClientOrders />} />
@@ -21,6 +24,7 @@ function App() {
         <Route path="/admin/products" element={<AdminProducts />} />
         <Route path="/admin/orders" element={<AdminOrders />} />
         <Route path="/admin/orders/:id" element={<AdminViewOrders />} />
+        <Route path="/admin/chat-support" element={<AdminSupport />} />
       </Routes>
       <ToastContainer />
     </>
