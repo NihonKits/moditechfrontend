@@ -4,6 +4,8 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "react-toastify/dist/ReactToastify.css";
+import "react-time-picker/dist/TimePicker.css";
+import "react-clock/dist/Clock.css";
 
 const queryClient = new QueryClient();
 

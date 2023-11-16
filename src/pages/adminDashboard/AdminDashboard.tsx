@@ -3,6 +3,8 @@ import { ArrowDropUp } from "@mui/icons-material";
 import { useQuery } from "react-query";
 import axios from "axios";
 import BarChart from "../../components/adminBarChart/AdminBarChart";
+import AdminBestProducts from "../../components/adminBestProducts/AdminBestProducts";
+import AdminZeroSoldProducts from "../../components/adminBestProducts/AdminZeroSoldProducts";
 
 const AdminDashboard = () => {
   const { data } = useQuery({
@@ -24,6 +26,12 @@ const AdminDashboard = () => {
             <b style={{ fontSize: "80px" }}>{data}</b>
           </div>
         </div>
+      </div>
+      <div className="dashboard-container">
+        <AdminBestProducts />
+      </div>
+      <div className="dashboard-container">
+        <AdminZeroSoldProducts />
       </div>
     </div>
   );

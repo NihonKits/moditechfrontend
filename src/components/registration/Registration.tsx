@@ -47,8 +47,9 @@ const Registration = ({ toggleRegistrationModal }: any) => {
       );
       setLoading(false);
       sendEmail();
-      toast.success("Please check your email to verify your registration!", {
-        position: "bottom-right",
+      toast("Please check your email to verify your registration!", {
+        type: "success",
+        position: "bottom-left",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

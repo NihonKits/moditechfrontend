@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./ClientOrderCard.css";
-import { OrderInterface, ProductInterface } from "../../Types";
+import { OrderInterface, OrderProductInterface } from "../../Types";
 import UploadReceipt from "../clientUploadReceipt/UploadReceipt";
 import moment from "moment";
 import { Dialog, DialogContent } from "@mui/material";
@@ -10,7 +10,7 @@ interface IOrderData {
 }
 
 const ClientOrderCard = ({ orderData }: IOrderData) => {
-  const [orderListJson, setOrderListJson] = useState<ProductInterface[]>();
+  const [orderListJson, setOrderListJson] = useState<OrderProductInterface[]>();
   const [openUploadReceipt, setOpenUploadReceipt] = useState<boolean>(false);
 
   useEffect(() => {
@@ -20,6 +20,8 @@ const ClientOrderCard = ({ orderData }: IOrderData) => {
   const toggleOpenUploadReceipt = () => {
     setOpenUploadReceipt(!openUploadReceipt);
   };
+
+  console.log(orderListJson);
 
   return (
     <div style={{ border: "2px solid green" }}>
@@ -39,18 +41,39 @@ const ClientOrderCard = ({ orderData }: IOrderData) => {
       </div>
       <hr style={{ borderBottom: "2px solid gray" }} />
       <section className="ordercard">
-        {orderListJson?.map((orderItem) => (
-          <div className="ordercard-container" key={orderItem.id}>
+        {orderListJson?.map((orderItem, index) => (
+          <div className="ordercard-container" key={index}>
+            <span>{orderItem.product.productName}</span>
             <img
               className="orderlist-image"
-              src={orderItem.productImage}
+              src={
+                orderItem?.product.productVariationsList[
+                  orderItem.variationIndex
+                ]?.imgUrl
+              }
               alt=""
             />
             <div className="ordercard-info-container">
-              <span>{orderItem.productName}</span>
-              <span style={{ color: "gray" }}>{orderItem.description}</span>
-              <span>₱{orderItem.price}.00</span>
-              <span>Qty: {orderItem.quantity}</span>
+              <span style={{ color: "gray" }}>
+                {
+                  orderItem?.product.productVariationsList[
+                    orderItem.variationIndex
+                  ]?.description
+                }
+              </span>
+              <span>
+                ₱
+                {
+                  orderItem?.product.productVariationsList[
+                    orderItem.variationIndex
+                  ]?.price
+                }
+                .00
+              </span>
+              <span>
+                Qty:
+                {orderItem?.quantity}
+              </span>
             </div>
           </div>
         ))}

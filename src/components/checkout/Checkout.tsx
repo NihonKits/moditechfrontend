@@ -1,11 +1,11 @@
 import "./Checkout.css";
-import { useCartStore } from "../../zustand/CartStore";
 import { IndeterminateCheckBox, AddBox } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import axios from "axios";
 import useAuthStore from "../../zustand/AuthStore";
 import { Dialog, DialogContent } from "@mui/material";
 import { useState } from "react";
+import { useCartStore } from "../../zustand/CartStore";
 
 import gcash from "../../assets/gcash.jpg";
 import bpi from "../../assets/bpi.jpg";
@@ -22,6 +22,8 @@ const Checkout = () => {
   const [selectedModePayment, setSelectedModePayment] =
     useState<string>("gcash");
   const [open, setOpen] = useState<boolean>(false);
+  const [address, setAddress] = useState<string>("");
+  const [contactNumber, setContactNumber] = useState<string>("");
 
   const handleCloseBtn = () => {
     setOpen(false);
@@ -32,12 +34,14 @@ const Checkout = () => {
 
   const handlePlaceOrder = async () => {
     const orderData = {
-      products: items.map((product) => ({
-        productId: product.id,
-        quantity: product.quantity,
+      products: items.map((item) => ({
+        productId: item.product.id,
+        quantity: item.quantity,
+        variationIndexes: [item.variationIndex],
       })),
       email: user,
-
+      address: address,
+      contactNumber: contactNumber,
       totalPrice: total,
       orderList: itemsToString,
       status: "Pending",
@@ -49,7 +53,9 @@ const Checkout = () => {
         orderData
       );
 
+      // Use the clearCart function if available in your useCartStore
       window.localStorage.removeItem("cart-storage");
+
       toast("Successfully ordered!", {
         type: "success",
         position: "bottom-left",
@@ -63,7 +69,7 @@ const Checkout = () => {
         setOpen(true);
       }, 2000);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -80,41 +86,59 @@ const Checkout = () => {
             marginBottom: "20px",
           }}
         />
-        {items?.map((item) => (
-          <section className="checkout-product" key={item.id}>
+        {items?.map((item, index) => (
+          <section className="checkout-product" key={index}>
             <div className="checkout-product-container">
               <img
                 className="checkout-image"
-                src={item.productImage}
-                alt={item.productName}
+                src={
+                  item.product.productVariationsList[item.variationIndex].imgUrl
+                }
+                alt={
+                  item.product.productVariationsList[item.variationIndex]
+                    .variationName
+                }
               />
             </div>
             <label>
-              Product Name: <b>{item.productName}</b>
+              Product Name:{" "}
+              <b>
+                {
+                  item.product.productVariationsList[item.variationIndex]
+                    .variationName
+                }
+              </b>
             </label>
             <label>
-              Product Price: <b>{item.price}</b>
+              Product Price:{" "}
+              <b>
+                {item.product.productVariationsList[item.variationIndex].price}
+              </b>
             </label>
             <div className="checkout-quantity-btn-container">
               <label>Quantity:</label>
               <div className="checkout-quantity-btn">
                 <IndeterminateCheckBox
-                  onClick={() => decreaseItem(item.id)}
+                  onClick={() => decreaseItem(index)}
                   style={{ cursor: "pointer", fontSize: "20px" }}
                 />
                 <span>{item.quantity}</span>
                 <AddBox
-                  onClick={() => increaseItem(item.id)}
+                  onClick={() => increaseItem(index)}
                   style={{ cursor: "pointer", fontSize: "20px" }}
                 />
               </div>
             </div>
             <label>
-              Price: <b>{item.price * item.quantity}</b>
+              Price:{" "}
+              <b>
+                {item.product.productVariationsList[item.variationIndex].price *
+                  item.quantity}
+              </b>
             </label>
             <button
               className="checkout-cancelbtn"
-              onClick={() => removeItem(item.id)}
+              onClick={() => removeItem(index)}
             >
               Remove
             </button>
@@ -124,7 +148,22 @@ const Checkout = () => {
       <h1>
         TOTAL PRICE: <b>{total}</b>
       </h1>
+
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        {/* TODO */}
+        <input
+          type="text"
+          placeholder="Address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Contact Number"
+          value={contactNumber}
+          onChange={(e) => setContactNumber(e.target.value)}
+        />
+        {/* TODO */}
         <select
           className="mode-of-payment"
           style={{ padding: "10px" }}

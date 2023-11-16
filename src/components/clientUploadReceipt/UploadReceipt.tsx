@@ -38,7 +38,7 @@ const UploadReceipt = ({
       );
       toast(" Successfully uploaded the receipt!", {
         type: "success",
-        position: "top-center",
+        position: "bottom-left",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,

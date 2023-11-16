@@ -1,15 +1,22 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import axios from "axios";
 import { ProductInterface } from "../Types";
 
 interface CartStore {
-  items: ProductInterface[];
+  items: {
+    product: ProductInterface;
+    variationIndex: number;
+    quantity: number;
+  }[];
   total: number;
-  addItem: (item: ProductInterface, quantity: number) => void;
-  increaseItem: (id: string) => void;
-  decreaseItem: (id: string) => void;
-  removeItem: (id: string) => void;
+  addItem: (
+    product: ProductInterface,
+    variationIndex: number,
+    quantity: number
+  ) => void;
+  increaseItem: (index: number) => void;
+  decreaseItem: (index: number) => void;
+  removeItem: (index: number) => void;
 }
 
 export const useCartStore = create<CartStore>(
@@ -17,18 +24,21 @@ export const useCartStore = create<CartStore>(
     (set) => ({
       items: [],
       total: 0,
-      addItem: async (item: ProductInterface, quantity: number = 1) => {
+      addItem: async (
+        product: ProductInterface,
+        variationIndex: number,
+        quantity: number = 1
+      ) => {
         try {
-          const { data } = await axios.get(
-            `${import.meta.env.VITE_APP_BASE_URL}/api/product/specificProduct/${
-              item.id
-            }`
-          );
-          const productQuantity = data.quantity;
+          const selectedVariation =
+            product.productVariationsList[variationIndex];
+          const productQuantity = selectedVariation.quantity;
 
           set((state: any) => {
             const index = state.items.findIndex(
-              (i: ProductInterface) => i.id === item.id
+              (item: any) =>
+                item.product.id === product.id &&
+                item.variationIndex === variationIndex
             );
 
             if (index === -1) {
@@ -36,8 +46,8 @@ export const useCartStore = create<CartStore>(
                 quantity = productQuantity;
               }
               return {
-                items: [...state.items, { ...item, quantity }],
-                total: state.total + item.price * quantity,
+                items: [...state.items, { product, variationIndex, quantity }],
+                total: state.total + selectedVariation.price * quantity,
               };
             } else {
               const newQuantity = state.items[index].quantity + quantity;
@@ -48,7 +58,7 @@ export const useCartStore = create<CartStore>(
               newItems[index].quantity += quantity;
               return {
                 items: newItems,
-                total: state.total + item.price * quantity,
+                total: state.total + selectedVariation.price * quantity,
               };
             }
           });
@@ -56,52 +66,68 @@ export const useCartStore = create<CartStore>(
           console.error(error);
         }
       },
-      increaseItem: async (id: string) => {
-        const { data } = await axios.get(
-          `${
-            import.meta.env.VITE_APP_BASE_URL
-          }/api/product/specificProduct/${id}`
-        );
-        const productQuantity = data.quantity;
+      increaseItem: (index: number) => {
         set((state: any) => {
-          const item = state.items.find((item: any) => item.id === id)!;
+          const cartItem = state.items[index];
+          const productQuantity =
+            cartItem.product.productVariationsList[cartItem.variationIndex]
+              .quantity;
 
-          if (productQuantity > item.quantity) {
+          if (productQuantity > cartItem.quantity) {
             return {
-              items: state.items.map((item: any) =>
-                item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+              items: state.items.map((item: any, i: number) =>
+                i === index ? { ...item, quantity: item.quantity + 1 } : item
               ),
-              total: state.total + item.price,
+              total:
+                state.total +
+                cartItem.product.productVariationsList[cartItem.variationIndex]
+                  .price,
             };
           } else {
-            alert("you can't add more item in the cart.");
+            alert("You can't add more items to the cart.");
             return state;
           }
         });
       },
-      decreaseItem: (id: string) => {
+      decreaseItem: (index: number) => {
         set((state: any) => {
-          const item = state.items.find((item: any) => item.id === id)!;
-          const newItems =
-            item.quantity === 1
-              ? state.items.filter((item: any) => item.id !== id)
-              : state.items.map((item: any) =>
-                  item.id === id
-                    ? { ...item, quantity: item.quantity - 1 }
-                    : item
-                );
-          return {
-            items: newItems,
-            total: state.total - item.price,
-          };
+          const cartItem = state.items[index];
+
+          if (cartItem.quantity === 1) {
+            const newItems = state.items.filter(
+              (_: any, i: number) => i !== index
+            );
+            return {
+              items: newItems,
+              total:
+                state.total -
+                cartItem.product.productVariationsList[cartItem.variationIndex]
+                  .price,
+            };
+          } else {
+            const newItems = state.items.map((item: any, i: number) =>
+              i === index ? { ...item, quantity: item.quantity - 1 } : item
+            );
+            return {
+              items: newItems,
+              total:
+                state.total -
+                cartItem.product.productVariationsList[cartItem.variationIndex]
+                  .price,
+            };
+          }
         });
       },
-      removeItem: (id: string) => {
+      removeItem: () => {
         set((state: any) => {
-          const item = state.items.find((item: any) => item.id === id)!;
+          const cartItem = state.items[0];
           return {
-            items: state.items.filter((item: any) => item.id !== id),
-            total: state.total - item.price * item.quantity,
+            items: state.items.filter((item: any) => item !== cartItem),
+            total:
+              state.total -
+              cartItem.product.productVariationsList[cartItem.variationIndex]
+                .price *
+                cartItem.quantity,
           };
         });
       },

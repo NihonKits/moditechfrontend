@@ -1,0 +1,33 @@
+.shop-section {
+  width: 100vw;
+  height: calc(100vh - 50px);
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.shop-section-container {
+  max-width: 1100px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.shop-section-title {
+  margin: 0;
+  padding: 0;
+}
+
+.shop-section-description {
+  margin-bottom: 30px;
+}
+
+.shop-products-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-content: center;
+  gap: 20px;
+}

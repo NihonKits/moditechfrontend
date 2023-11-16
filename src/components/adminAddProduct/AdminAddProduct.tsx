@@ -1,8 +1,7 @@
 import axios from "axios";
-import { ProductInterface } from "../../Types";
 import "./AdminAddProduct.css";
 import { Close, Check } from "@mui/icons-material";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface props {
   toggleProductModal: () => void;
@@ -10,27 +9,33 @@ interface props {
 
 const AdminAddProduct = ({ toggleProductModal }: props) => {
   const [ImageFile, setImageFile] = useState<string>("");
-  const [addProductInfo, setAddProductInfo] = useState<ProductInterface>({
-    id: "",
-    productName: "",
-    productImage: "",
-    description: "",
-    category: "",
-    quantity: 0,
-    price: 0,
-  });
+  // const [addProductInfo, setAddProductInfo] = useState<ProductInterface>({
+  //   id: "",
+  //   productName: "",
+  //   productImage: "",
+  //   description: "",
+  //   category: "",
+  //   quantity: 0,
+  //   price: 0,
+  //   barcode: "",
+  //   isAd: "false",
+  // });
+  const [barcode, setBarcode] = useState<string>("");
+  const [productName, setProductName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+
   const [loading, setLoading] = useState<boolean>(false);
 
-  const onChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { value, name } = event.target;
+  // const onChangeHandler = (
+  //   event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  // ) => {
+  //   const { value, name } = event.target;
 
-    setAddProductInfo((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  //   setAddProductInfo((prevState) => ({
+  //     ...prevState,
+  //     [name]: value,
+  //   }));
+  // };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -49,7 +54,9 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
       await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/api/product/create`,
         {
-          ...addProductInfo,
+          barcode: barcode,
+          productName: productName,
+          description: description,
           productImage: url,
         }
       );
@@ -114,20 +121,52 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
           />
         </label>
       </div>
-      <section className="addproduct-item-section" style={{ width: "100%" }}>
-        <div className="addproduct-item-list" style={{ width: "50%" }}>
-          <label>
-            Product Name
-            <input
-              className="addproduct-input"
-              style={{ width: "95%" }}
-              type="text"
-              name="productName"
-              defaultValue={addProductInfo.productName}
-              onChange={onChangeHandler}
-            />
-          </label>
-        </div>
+
+      <section
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          margin: "10px 0",
+        }}
+      >
+        <label
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "50%",
+            height: "60px",
+          }}
+        >
+          Barcode
+          <input
+            className="addproduct-input"
+            style={{ width: "95%", height: "50px" }}
+            type="text"
+            name="productName"
+            defaultValue={barcode}
+            onChange={(e) => setBarcode(e.target.value)}
+          />
+        </label>
+
+        <label
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "50%",
+            height: "60px",
+          }}
+        >
+          Product Name
+          <input
+            className="addproduct-input"
+            style={{ width: "95%", height: "50px" }}
+            type="text"
+            name="productName"
+            defaultValue={productName}
+            onChange={(e) => setProductName(e.target.value)}
+          />
+        </label>
       </section>
 
       <section className="addproduct-item-list" style={{ width: "100%" }}>
@@ -139,53 +178,12 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
             className="addproduct-input"
             type="text"
             name="description"
-            defaultValue={addProductInfo.description}
-            onChange={onChangeHandler}
+            defaultValue={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </label>
       </section>
 
-      <section
-        className="addproduct-item-section"
-        style={{ width: "100%", gap: "15px" }}
-      >
-        <div className="addproduct-item-list" style={{ width: "50%" }}>
-          <label>
-            Qty
-            <input
-              className="addproduct-input addproduct-input-number"
-              type="number"
-              style={{ width: "100%" }}
-              name="quantity"
-              defaultValue={addProductInfo.quantity}
-              onChange={(e) => {
-                setAddProductInfo((data) => ({
-                  ...data,
-                  quantity: parseInt(e.target.value),
-                }));
-              }}
-            />
-          </label>
-        </div>
-        <div className="addproduct-item-list" style={{ width: "50%" }}>
-          <label>
-            Price
-            <input
-              className="addproduct-input addproduct-input-number"
-              type="number"
-              style={{ width: "100%" }}
-              name="price"
-              defaultValue={addProductInfo.price}
-              onChange={(e) => {
-                setAddProductInfo((data) => ({
-                  ...data,
-                  price: parseInt(e.target.value),
-                }));
-              }}
-            />
-          </label>
-        </div>
-      </section>
       <hr style={{ marginTop: "20px" }} />
       <div className="addproduct-btn-container">
         <button className="addproduct-btn close" onClick={toggleProductModal}>

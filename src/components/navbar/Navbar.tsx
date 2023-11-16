@@ -64,8 +64,18 @@ const Navbar = () => {
             HOME
           </span>
           <span className="nav-link">ABOUT</span>
-          <span className="nav-link">SHOP</span>
-          <span className="nav-link">CONTACT</span>
+          <Link
+            to="/client/shop"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <span className="nav-link">SHOP</span>
+          </Link>
+          <Link
+            to="/client/reservations"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <span className="nav-link">SERVICE RESERVATION</span>
+          </Link>
           {userData?.userRole === "ROLE_ADMIN" && (
             <div className="nav-dropdown" onClick={toggleManagementDropdown}>
               <span className="nav-link">MANAGEMENT</span>
@@ -79,32 +89,48 @@ const Navbar = () => {
                   }
                 >
                   <Link
-                    style={{ textDecoration: "none" }}
+                    style={{ textDecoration: "none", color: "black" }}
                     to="/admin/dashboard"
                   >
                     <span>DASHBOARD</span>
                   </Link>
-                  <Link style={{ textDecoration: "none" }} to="/admin/products">
+                  <Link
+                    style={{ textDecoration: "none", color: "black" }}
+                    to="/admin/products"
+                  >
                     <span>PRODUCT MANAGEMENT</span>
                   </Link>
-                  <Link style={{ textDecoration: "none" }} to="/admin/orders">
+
+                  <Link
+                    style={{ textDecoration: "none", color: "black" }}
+                    to="/admin/orders"
+                  >
                     <span>ORDER MANAGEMENT</span>
                   </Link>
                   <Link
-                    style={{ textDecoration: "none" }}
+                    style={{ textDecoration: "none", color: "black" }}
                     to="/admin/chat-support"
                   >
                     <span>CHAT SUPPORT MANAGEMENT</span>
+                  </Link>
+                  <Link
+                    style={{ textDecoration: "none", color: "black" }}
+                    to="/admin/reservations"
+                  >
+                    <span>RESERVATION MANAGEMENT</span>
                   </Link>
                 </div>
               )}
             </div>
           )}
-          {/* {userData?.userRole === "ROLE_USER" && ( */}
-          <Link style={{ textDecoration: "none" }} to="/client/orders">
-            <span className="nav-link">ORDERS</span>
-          </Link>
-          {/* )} */}
+          {userData?.userRole === "ROLE_USER" && (
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              to="/client/orders"
+            >
+              <span className="nav-link">ORDERS</span>
+            </Link>
+          )}
         </section>
         <section className="nav-action-container">
           {user ? (

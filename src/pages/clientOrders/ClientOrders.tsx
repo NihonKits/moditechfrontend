@@ -69,9 +69,6 @@ const ClientOrders = () => {
 
   return (
     <div className="profilepage">
-      {/* <div className="profilepage-banner">
-        <ProfileHeader />
-      </div> */}
       <section className="profilepage-body">
         <div className="profilepage-btns">
           <button

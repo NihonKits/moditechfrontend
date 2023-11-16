@@ -66,6 +66,12 @@ const AdminOrders = () => {
                 Customer Email
               </TableCell>
               <TableCell className="table-header" align="center">
+                Address
+              </TableCell>
+              <TableCell className="table-header" align="center">
+                Contact number
+              </TableCell>
+              <TableCell className="table-header" align="center">
                 Total Price
               </TableCell>
               <TableCell className="table-header" align="center">
@@ -85,6 +91,12 @@ const AdminOrders = () => {
               <TableRow key={item.id} className="admin-order-table-body-row">
                 <TableCell className="table-header" align="center">
                   {item.email}
+                </TableCell>
+                <TableCell className="table-header" align="center">
+                  {item.address}
+                </TableCell>
+                <TableCell className="table-header" align="center">
+                  {item.contactNumber}
                 </TableCell>
                 <TableCell className="table-header" align="center">
                   ₱{item.totalPrice}

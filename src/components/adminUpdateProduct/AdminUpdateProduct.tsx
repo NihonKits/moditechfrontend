@@ -18,9 +18,12 @@ const AdminUpdateProduct = ({
   const [singleProductData, setSingleProductData] =
     useState<ProductInterface>();
   const [loading, setLoading] = useState<boolean>(false);
-  // const [categoryDropDown, setCategoryDropDown] = useState<CategoryInterface[]>(
-  //   []
-  // );
+
+  const [barcode, setBarcode] = useState<string>("");
+  const [productName, setProductName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [productImage, setProductImage] = useState<string>("");
+  const [isAd, setIsAd] = useState<string>("");
 
   useEffect(() => {
     const fetch = async () => {
@@ -34,41 +37,13 @@ const AdminUpdateProduct = ({
     fetch();
   }, [paramsId]);
 
-  const [productInfo, setProductInfo] = useState<ProductInterface>({
-    id: "",
-    productName: "",
-    productImage: "",
-    description: "",
-    price: 0,
-    quantity: 0,
-    category: "",
-    //   sold: 0,
-    //   reason: "",
-  });
-
   useEffect(() => {
-    setProductInfo({
-      id: singleProductData?.id || "",
-      productName: singleProductData?.productName || "",
-      productImage: singleProductData?.productImage || "",
-      description: singleProductData?.description || "",
-      price: singleProductData?.price || 0,
-      quantity: singleProductData?.quantity || 0,
-      category: singleProductData?.category || "",
-      // sold: 0,
-      // reason: singleProductData?.reason || "",
-    });
+    setBarcode(singleProductData?.barcode || "");
+    setProductName(singleProductData?.productName || "");
+    setProductImage(singleProductData?.productImage || "");
+    setDescription(singleProductData?.description || "");
+    setIsAd(singleProductData?.isAd || "false");
   }, [singleProductData, paramsId]);
-
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     const res = await axios.get(
-  //       `${import.meta.env.VITE_APP_BASE_URL}/api/category/list`
-  //     );
-  //     setCategoryDropDown(res.data);
-  //   };
-  //   fetch();
-  // }, []);
 
   const fileTypeChecking = (e: any) => {
     var fileInput = document.getElementById("file-upload") as HTMLInputElement;
@@ -104,26 +79,21 @@ const AdminUpdateProduct = ({
         await axios.put(
           `${import.meta.env.VITE_APP_BASE_URL}/api/product/update/${paramsId}`,
           {
-            productName: productInfo.productName,
+            barcode: barcode,
+            productName: productName,
             imageUrl: url,
-            description: productInfo.description,
-            price: productInfo.price,
-            quantity: productInfo.quantity,
-            //   category: productInfo.categoryId,
-            //   reason: productInfo.reason,
+            description: description,
+            isAd: isAd,
           }
         );
       } else {
         await axios.put(
           `${import.meta.env.VITE_APP_BASE_URL}/api/product/update/${paramsId}`,
           {
-            productName: productInfo.productName,
-            productImage: singleProductData?.productImage,
-            description: productInfo.description,
-            price: productInfo.price,
-            quantity: productInfo.quantity,
-            //   category: productInfo.categoryId,
-            //   reason: productInfo.reason,
+            barcode: barcode,
+            productName: productName,
+            description: description,
+            isAd: isAd,
           }
         );
       }
@@ -146,13 +116,6 @@ const AdminUpdateProduct = ({
 
   return (
     <div className="update-product">
-      {/* <button
-        className="addcategory-closebtn"
-        onClick={() => toggleModalUpdateProduct}
-      >
-        x
-      </button> */}
-
       <div className="update-product-image-container">
         <img
           src={
@@ -160,7 +123,7 @@ const AdminUpdateProduct = ({
               ? URL.createObjectURL(
                   new Blob([imageFile], { type: "image/jpeg" })
                 )
-              : productInfo.productImage
+              : productImage
           }
           alt="AddImage"
           className="addcategory-img"
@@ -183,14 +146,34 @@ const AdminUpdateProduct = ({
             type="text"
             placeholder="Product Name"
             className="update-product-input"
-            value={productInfo.productName}
-            onChange={(e) => {
-              setProductInfo((data) => ({
-                ...data,
-                productName: e.target.value,
-              }));
-            }}
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
           />
+        </div>
+
+        {/*  */}
+        <div className="update-product-itemlist">
+          <label>Barcode:</label>
+          <input
+            type="text"
+            placeholder="Barcode"
+            className="update-product-input"
+            value={barcode}
+            onChange={(e) => setBarcode(e.target.value)}
+          />
+        </div>
+
+        <div className="update-product-itemlist">
+          <label>Put as an Ad:</label>
+          <select
+            className="update-product-input"
+            style={{ height: "45px", width: "100%" }}
+            value={isAd}
+            onChange={(e) => setIsAd(e.target.value)}
+          >
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
         </div>
 
         <div className="update-product-itemlist">
@@ -199,83 +182,10 @@ const AdminUpdateProduct = ({
             type="text"
             placeholder="description"
             className="update-product-input"
-            value={productInfo.description}
-            onChange={(e) => {
-              setProductInfo((data) => ({
-                ...data,
-                description: e.target.value,
-              }));
-            }}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-
-        <div className="update-product-itemlist">
-          <label>Product Price:</label>
-          <input
-            type="number"
-            placeholder="Price"
-            className="update-product-input"
-            value={productInfo.price}
-            onChange={(e) => {
-              setProductInfo((data) => ({
-                ...data,
-                price: parseInt(e.target.value),
-              }));
-            }}
-          />
-        </div>
-
-        <div className="update-product-itemlist">
-          <label>Product Quantity:</label>
-          <input
-            type="number"
-            placeholder="Quantity"
-            className="update-product-input"
-            value={productInfo.quantity}
-            onChange={(e) => {
-              setProductInfo((data) => ({
-                ...data,
-                quantity: parseInt(e.target.value),
-              }));
-            }}
-          />
-        </div>
-
-        {/*  <div className="update-product-itemlist">
-      <select
-        className="addcategory-input"
-        value={productInfo.categoryId}
-        onChange={(e) => {
-          const selectedCategoryId = e.target.value;
-          setProductInfo((data) => ({
-            ...data,
-            categoryId: selectedCategoryId || "",
-          }));
-        }}
-      >
-        {categoryDropDown?.map((item) => (
-          <option key={item.id} value={item.id}>
-            {item.categoryName}
-          </option>
-        ))}
-      </select>
-    </div> 
-    
-    
-     <div className="update-product-itemlist">
-      <input
-        type="text"
-        placeholder="Reason"
-        className="addcategory-input"
-        value={productInfo.reason}
-        onChange={(e) => {
-          setProductInfo((data) => ({
-            ...data,
-            reason: e.target.value,
-          }));
-        }}
-      />
-    </div>*/}
       </div>
 
       <div className="addproduct-btn-container">
