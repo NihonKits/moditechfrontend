@@ -79,9 +79,7 @@ function App() {
         />
         <Route
           path="/admin/products/:id"
-          element={
-            userIsAdmin ? <AdminProductVariation /> : <Navigate to="/" />
-          }
+          element={user ? <AdminProductVariation /> : <Navigate to="/" />}
         />
       </Routes>
       <ToastContainer />

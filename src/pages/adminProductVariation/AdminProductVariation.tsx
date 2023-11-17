@@ -14,11 +14,23 @@ import { ProductInterface } from "../../Types";
 import axios from "axios";
 import { useQuery } from "react-query";
 import AdminAddProductVariation from "../../components/adminAddProductVariation/AdminAddProductVariation";
+import AdminUpdateProductVariation from "../../components/adminUpdateProductVariation/AdminUpdateProductVariation";
 
 const AdminProductVariation = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[3];
   const [openAdd, setOpenAdd] = useState<boolean>(false);
+  const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+  const [variationName, setVariationName] = useState<string>("");
+
+  const toggleModalUpdateProduct = (id: string) => {
+    setVariationName(id);
+    setOpenUpdate(true);
+  };
+
+  const toggleCloseUpdate = () => {
+    setOpenUpdate(false);
+  };
 
   const toggleModal = () => {
     setOpenAdd(false);
@@ -35,6 +47,19 @@ const AdminProductVariation = () => {
         )
         .then((res) => res.data),
   });
+
+  const handleDelete = async (varationName: string) => {
+    try {
+      await axios.delete(
+        `${
+          import.meta.env.VITE_APP_BASE_URL
+        }/api/product/${id}/variations/${varationName}`
+      );
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div
@@ -71,6 +96,9 @@ const AdminProductVariation = () => {
               </TableCell>
               <TableCell className="table-header" align="center">
                 Quantity
+              </TableCell>
+              <TableCell className="table-header" align="center">
+                Actions
               </TableCell>
             </TableRow>
           </TableHead>
@@ -110,6 +138,32 @@ const AdminProductVariation = () => {
                   >
                     {variation?.quantity}
                   </TableCell>
+                  <TableCell className="table-header" align="center">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <button
+                        className="admin-order-btn"
+                        onClick={() =>
+                          toggleModalUpdateProduct(variation.variationName)
+                        }
+                        style={{ backgroundColor: "blue" }}
+                      >
+                        Update
+                      </button>
+                      <button
+                        className="admin-order-btn"
+                        onClick={() => handleDelete(variation.variationName)}
+                        style={{ backgroundColor: "red" }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
@@ -125,6 +179,15 @@ const AdminProductVariation = () => {
       <Dialog open={openAdd} onClose={toggleModal}>
         <DialogContent>
           <AdminAddProductVariation toggleModal={toggleModal} />
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openUpdate} onClose={toggleCloseUpdate}>
+        <DialogContent>
+          <AdminUpdateProductVariation
+            toggleModal={toggleCloseUpdate}
+            paramsId={id}
+            name={variationName}
+          />
         </DialogContent>
       </Dialog>
     </div>
