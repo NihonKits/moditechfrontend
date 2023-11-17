@@ -4,7 +4,8 @@ export interface LoginInterface {
 }
 
 export interface RegistrationInterface {
-  fullname: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }

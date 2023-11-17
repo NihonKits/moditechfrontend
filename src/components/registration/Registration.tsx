@@ -7,7 +7,8 @@ import { toast } from "react-toastify";
 const Registration = ({ toggleRegistrationModal }: any) => {
   const [registrationInfo, setRegistrationInfo] =
     useState<RegistrationInterface>({
-      fullname: "",
+      lastName: "",
+      firstName: "",
       email: "",
       password: "",
     });
@@ -87,11 +88,21 @@ const Registration = ({ toggleRegistrationModal }: any) => {
       <div className="input-container">
         <input
           type="text"
-          placeholder="Full name"
-          name="fullname"
+          placeholder="Last name"
+          name="lastName"
           onChange={onChangeHandler}
         />
       </div>
+
+      <div className="input-container">
+        <input
+          type="text"
+          placeholder="First name"
+          name="firstName"
+          onChange={onChangeHandler}
+        />
+      </div>
+
       <div className="input-container">
         <input
           type="email"
