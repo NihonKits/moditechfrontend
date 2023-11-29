@@ -101,6 +101,7 @@ export interface ConversationInterface {
   name: string;
   description: string;
   createdAt: Date;
+  messages: IMessage[];
 }
 
 export interface IMessage {
@@ -109,6 +110,8 @@ export interface IMessage {
   message: string;
   isUser: boolean;
   createdAt: Date;
+  isUserReadTheMessage: boolean;
+  isAdminReadTheMessage: boolean;
 }
 
 export interface IAppointment {

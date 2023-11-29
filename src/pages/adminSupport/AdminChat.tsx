@@ -14,9 +14,10 @@ import useAuthStore from "../../zustand/AuthStore";
 
 interface Prop {
   selectedConversation: ConversationInterface;
+  markMessagesAsRead: () => void;
 }
 
-const AdminChat = ({ selectedConversation }: Prop) => {
+const AdminChat = ({ selectedConversation, markMessagesAsRead }: Prop) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [replyInput, setReplyInput] = useState<string>("");
 
@@ -35,6 +36,8 @@ const AdminChat = ({ selectedConversation }: Prop) => {
         name: user,
         message: replyInput,
         createdAt: serverTimestamp(),
+        isUserReadTheMessage: false,
+        isAdminReadTheMessage: true,
       });
 
       setReplyInput("");
@@ -89,6 +92,7 @@ const AdminChat = ({ selectedConversation }: Prop) => {
               placeholder="Type your reply..."
               value={replyInput}
               onChange={(e) => setReplyInput(e.target.value)}
+              onFocus={markMessagesAsRead}
             />
             <button onClick={handleReply}>Reply</button>
           </div>

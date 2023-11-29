@@ -132,8 +132,6 @@ const AdminProductVariation = () => {
                           : variation.quantity <= 10
                           ? "orange"
                           : "green",
-                      fontWeight: "bold",
-                      fontSize: "18px",
                     }}
                   >
                     {variation?.quantity}

@@ -23,6 +23,14 @@ const AdminOrders = () => {
         .then((res) => res.data),
   });
 
+  if (data && data.length > 0) {
+    // Sort the data array in descending order based on the orderDate
+    data.sort(
+      (a, b) =>
+        new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+    );
+  }
+
   const handleChangeStatus = async (id: string, newValueStatus: string) => {
     try {
       await axios.put(
@@ -111,10 +119,12 @@ const AdminOrders = () => {
                     <option value="Pending">Pending</option>
                     <option value="Completed">Completed</option>
                     <option value="Cancelled">Cancelled</option>
+                    <option value="Cancelled">Return</option>
+                    <option value="Cancelled">Return and Refund</option>
                   </select>
                 </TableCell>
                 <TableCell className="table-header" align="center">
-                  {moment(item.orderDate).format("YYYY-MM-DD")}
+                  {moment(item.orderDate).format("YYYY-MM-DD hh:mm A")}
                 </TableCell>
                 <TableCell className="table-header" align="center">
                   <Link to={`/admin/orders/${item.id}`}>

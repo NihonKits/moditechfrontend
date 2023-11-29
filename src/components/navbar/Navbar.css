@@ -29,8 +29,9 @@
   gap: 20px;
 }
 
-.nav-link {
+.nav-link-span {
   cursor: pointer;
+  color: black;
 }
 
 .nav-action-container {
