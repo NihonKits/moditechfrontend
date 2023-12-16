@@ -24,7 +24,7 @@ const AdminOrders = () => {
   });
 
   if (data && data.length > 0) {
-    // Sort the data array in descending order based on the orderDate
+   
     data.sort(
       (a, b) =>
         new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()

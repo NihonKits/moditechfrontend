@@ -92,11 +92,12 @@ const Checkout = () => {
               <img
                 className="checkout-image"
                 src={
-                  item.product.productVariationsList[item.variationIndex].imgUrl
+                  item.product?.productVariationsList[item?.variationIndex]
+                    ?.imgUrl
                 }
                 alt={
-                  item.product.productVariationsList[item.variationIndex]
-                    .variationName
+                  item.product?.productVariationsList[item?.variationIndex]
+                    ?.variationName
                 }
               />
             </div>
@@ -104,15 +105,18 @@ const Checkout = () => {
               Product Name:{" "}
               <b>
                 {
-                  item.product.productVariationsList[item.variationIndex]
-                    .variationName
+                  item.product?.productVariationsList[item?.variationIndex]
+                    ?.variationName
                 }
               </b>
             </label>
             <label>
               Product Price:{" "}
               <b>
-                {item.product.productVariationsList[item.variationIndex].price}
+                {
+                  item.product?.productVariationsList[item?.variationIndex]
+                    ?.price
+                }
               </b>
             </label>
             <div className="checkout-quantity-btn-container">
@@ -132,8 +136,8 @@ const Checkout = () => {
             <label>
               Price:{" "}
               <b>
-                {item.product.productVariationsList[item.variationIndex].price *
-                  item.quantity}
+                {item.product?.productVariationsList[item?.variationIndex]
+                  ?.price * item?.quantity}
               </b>
             </label>
             <button

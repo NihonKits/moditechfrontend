@@ -14,18 +14,25 @@ const IsAdProducts = () => {
   });
 
   return (
-    <div className="shop-section">
-      <div className="shop-section-container">
-        <h1 className="shop-section-title" style={{ paddingBottom: "20px" }}>
-          PRODUCTS THAT ARE ON SALE
-        </h1>
-        <section className="shop-products-section">
-          {data?.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </section>
-      </div>
-    </div>
+    <>
+      {data?.length !== 0 && (
+        <div className="shop-section">
+          <div className="shop-section-container">
+            <h1
+              className="shop-section-title"
+              style={{ paddingBottom: "20px" }}
+            >
+              PRODUCTS THAT ARE ON SALE
+            </h1>
+            <section className="shop-products-section">
+              {data?.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </section>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

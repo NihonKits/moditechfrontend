@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { ProductInterface, ProductVarianceInteface } from "../../Types";
 import { useCartStore } from "../../zustand/CartStore";
+import Footer from "../../components/footer/Footer";
 
 const ProductSinglePage = () => {
   const location = useLocation();
@@ -70,78 +71,83 @@ const ProductSinglePage = () => {
   };
 
   return (
-    <div className="container">
-      {productData ? (
-        <>
-          <div className="product-page-container">
-            <div className="wrapper">
-              <div className="img-container">
-                <img
-                  src={selectedVariation?.imgUrl}
-                  className="InnerImageZoom"
-                  alt="Product Variation"
-                />
-              </div>
-              <div className="info-container">
-                <h1>{selectedVariation?.variationName}</h1>
-                <p>{selectedVariation?.description}</p>
+    <>
+      <div className="container">
+        {productData ? (
+          <>
+            <div className="product-page-container">
+              <div className="wrapper">
+                <div className="img-container">
+                  <img
+                    src={selectedVariation?.imgUrl}
+                    className="InnerImageZoom"
+                    alt="Product Variation"
+                  />
+                </div>
+                <div className="info-container">
+                  <h1 className="variation-name">
+                    {selectedVariation?.variationName}
+                  </h1>
+                  <p className="desc">{selectedVariation?.description}</p>
 
-                <div>
-                  <p
-                    style={{
-                      fontSize: "50px",
-                      color: "orange",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    ₱{selectedVariation?.price}
-                  </p>
-                </div>
-                <div className="filter-container">
-                  Variations:
-                  <div className="filter">
-                    {productData.productVariationsList?.map((item, key) => (
-                      <span
-                        key={key}
-                        onClick={() => handleVariationClick(item)}
-                        className={
-                          selectedVariation === item
-                            ? "variant-active"
-                            : "variant-non-active"
-                        }
-                      >
-                        <b>{item.variationName}</b>
-                      </span>
-                    ))}
+                  <div>
+                    <p
+                      style={{
+                        fontSize: "50px",
+                        color: "orange",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      ₱{selectedVariation?.price}
+                    </p>
                   </div>
-                </div>
-                <div className="add-container">
-                  <div className="amount-container">
-                    <Remove
-                      onClick={() => handleQuantity("dec")}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <span>{quantity}</span>
-                    <Add
-                      onClick={() => handleQuantity("inc")}
-                      style={{ cursor: "pointer" }}
-                    />
+                  <div className="filter-container">
+                    Variations:
+                    <div className="filter">
+                      {productData.productVariationsList?.map((item, key) => (
+                        <span
+                          key={key}
+                          onClick={() => handleVariationClick(item)}
+                          className={
+                            selectedVariation === item
+                              ? "variant-active"
+                              : "variant-non-active"
+                          }
+                        >
+                          <b>{item.variationName}</b>
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <button
-                    className="product-single-page-btn"
-                    onClick={handleAddToCart}
-                  >
-                    ADD TO CART
-                  </button>
+                  <div className="add-container">
+                    <div className="amount-container">
+                      <Remove
+                        onClick={() => handleQuantity("dec")}
+                        style={{ cursor: "pointer" }}
+                      />
+                      <span>{quantity}</span>
+                      <Add
+                        onClick={() => handleQuantity("inc")}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </div>
+                    <button
+                      className="product-single-page-btn"
+                      onClick={handleAddToCart}
+                    >
+                      ADD TO CART
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </>
-      ) : (
-        <div className="spinner"></div>
-      )}
-    </div>
+          </>
+        ) : (
+          <div className="spinner"></div>
+        )}
+      </div>
+      <Footer />
+    </>
   );
 };
 

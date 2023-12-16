@@ -1,5 +1,5 @@
 import "./Navbar.css";
-import { LocalMall } from "@mui/icons-material";
+import { LocalMall, Person } from "@mui/icons-material";
 import logo from "../../assets/logo.png";
 import { Drawer } from "antd";
 import Checkout from "../checkout/Checkout";
@@ -12,6 +12,7 @@ import { OrderInterface, Transition, UserInterface } from "../../Types";
 import useAuthStore from "../../zustand/AuthStore";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { Tooltip } from "react-tooltip";
 
 const Navbar = () => {
   const [userData, setUserData] = useState<UserInterface>();
@@ -71,7 +72,13 @@ const Navbar = () => {
   return (
     <div className="nav">
       <div className="nav-container">
-        <img src={logo} alt="moditect logo" className="nav-logo" />
+        {/* <h2 style={{ color: "#F5FFFF" }}>ModiTech</h2> */}
+        <img
+          src={logo}
+          alt="moditect logo"
+          className="nav-logo"
+          onClick={handleHome}
+        />
         <section className="nav-link-container">
           <span className="nav-link-span" onClick={handleHome}>
             HOME
@@ -79,14 +86,14 @@ const Navbar = () => {
           <span className="nav-link-span">ABOUT</span>
           <Link
             to="/client/shop"
-            style={{ textDecoration: "none", color: "black" }}
+            style={{ textDecoration: "none", color: "#f5ffff" }}
           >
             <span className="nav-link-span">SHOP</span>
           </Link>
           {userData?.userRole === "ROLE_USER" && (
             <Link
               to="/client/reservations"
-              style={{ textDecoration: "none", color: "black" }}
+              style={{ textDecoration: "none", color: "#f5ffff" }}
             >
               <span className="nav-link-span">SERVICE RESERVATION</span>
             </Link>
@@ -105,26 +112,26 @@ const Navbar = () => {
                     }
                   >
                     <Link
-                      style={{ textDecoration: "none", color: "black" }}
+                      style={{ textDecoration: "none", color: "#f5ffff" }}
                       to="/admin/dashboard"
                     >
                       <span>DASHBOARD</span>
                     </Link>
                     <Link
-                      style={{ textDecoration: "none", color: "black" }}
+                      style={{ textDecoration: "none", color: "#f5ffff" }}
                       to="/admin/products"
                     >
                       <span>PRODUCT MANAGEMENT</span>
                     </Link>
 
                     <Link
-                      style={{ textDecoration: "none", color: "black" }}
+                      style={{ textDecoration: "none", color: "#f5ffff" }}
                       to="/admin/chat-support"
                     >
                       <span>CHAT SUPPORT MANAGEMENT</span>
                     </Link>
                     <Link
-                      style={{ textDecoration: "none", color: "black" }}
+                      style={{ textDecoration: "none", color: "#f5ffff" }}
                       to="/admin/reservations"
                     >
                       <span>RESERVATION MANAGEMENT</span>
@@ -134,7 +141,7 @@ const Navbar = () => {
               </div>
 
               <Link
-                style={{ textDecoration: "none", color: "black" }}
+                style={{ textDecoration: "none", color: "#f5ffff" }}
                 to="/admin/orders"
               >
                 <Badge badgeContent={pendingOrders?.length} color="primary">
@@ -145,7 +152,7 @@ const Navbar = () => {
           )}
           {userData?.userRole === "ROLE_USER" && (
             <Link
-              style={{ textDecoration: "none", color: "black" }}
+              style={{ textDecoration: "none", color: "#f5ffff" }}
               to="/client/orders"
             >
               <span className="nav-link-span">ORDERS</span>
@@ -155,8 +162,24 @@ const Navbar = () => {
         <section className="nav-action-container">
           {user ? (
             <div className="navbar-user-logout-container">
-              <span>{user}</span>
-              <button onClick={clearUser}>Logout</button>
+              <Person
+                sx={{ color: "#f5ffff", fontSize: "33px" }}
+                id="clickable"
+              />
+              <Tooltip
+                anchorSelect="#clickable"
+                clickable
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <span style={{ color: "#f5ffff" }}>{user}</span>
+                <button onClick={clearUser}>Logout</button>
+              </Tooltip>
             </div>
           ) : (
             <button className="nav-btn" onClick={toggleLoginModal}>
@@ -169,7 +192,7 @@ const Navbar = () => {
             color="primary"
             onClick={showDrawer}
           >
-            <LocalMall sx={{ color: "black" }} />
+            <LocalMall sx={{ color: "#f5ffff", fontSize: "30px" }} />
           </Badge>
         </section>
       </div>

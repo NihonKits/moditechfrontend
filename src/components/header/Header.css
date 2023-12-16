@@ -49,3 +49,19 @@
 .header-right {
   width: 25%;
 }
+
+.header-btn {
+  background-color: #f5ffff;
+  color: #040404;
+  padding: 10px 20px;
+  font-size: 18px;
+  width: 300px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.header-btn:hover {
+  background-color: #5d7555;
+  color: #f5ffff;
+}

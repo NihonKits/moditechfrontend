@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
@@ -6,10 +7,10 @@ const Header = () => {
       <div className="header-container">
         <section className="header-left">
           <h1 className="header-title">ModiTech</h1>
-          <p className="header-slogan">
-            We offer Premium LED lights that gives you better ride during night
-            life.
-          </p>
+          <p className="header-slogan">Where the Road Ends, Adventure Begins</p>
+          <Link to="/client/shop">
+            <button className="header-btn">Shop Now</button>
+          </Link>
         </section>
         <section className="header-right"></section>
       </div>
