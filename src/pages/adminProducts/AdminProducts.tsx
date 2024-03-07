@@ -14,14 +14,14 @@ import axios from "axios";
 import { useState } from "react";
 import AdminAddProduct from "../../components/adminAddProduct/AdminAddProduct";
 import AdminUpdateProduct from "../../components/adminUpdateProduct/AdminUpdateProduct";
-import BarcodeReader from "../../components/barcodeReader/BarcodeReader";
 import { Link } from "react-router-dom";
+import { Search } from "@mui/icons-material";
 
 const AdminProducts = () => {
   const [openAdd, setOpenAdd] = useState<boolean>(false);
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [paramsId, setParamsId] = useState<string>("");
-  const [barcodeData, setBarcodeData] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const toggleModalUpdateProduct = (id: string) => {
     setParamsId(id);
@@ -55,13 +55,11 @@ const AdminProducts = () => {
     }
   };
 
-  const filtered = data?.filter((item) => {
-    if (barcodeData) {
-      return item?.barcode?.toLowerCase()?.includes(barcodeData);
-    } else {
-      return data;
-    }
-  });
+  const filtered = data?.filter(
+    (item) =>
+      item?.barcode?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+      item?.productName?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  );
 
   console.log("productTable:", data);
 
@@ -79,10 +77,40 @@ const AdminProducts = () => {
         className="product"
         style={{ maxWidth: "1100px", width: "100%" }}
       >
-        <button className="product-add-btn" onClick={() => setOpenAdd(true)}>
+        <button
+          style={{ border: "none", padding: "20px 40px", borderRadius: "10px" }}
+          className="product-add-btn"
+          onClick={() => setOpenAdd(true)}
+        >
           Add Product
         </button>
-        <BarcodeReader setBarcodeData={setBarcodeData} />
+        <div
+          style={{
+            border: "2px solid black",
+            width: "96%",
+            display: "flex",
+            alignItems: "center",
+            paddingLeft: "20px",
+            borderRadius: "20px",
+            marginBottom: "20px",
+            marginTop: "20px",
+          }}
+        >
+          <Search />
+          <input
+            style={{
+              width: "80%",
+              border: "none",
+              outline: "none",
+              padding: "20px",
+            }}
+            type="text"
+            placeholder="Search using barcode"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
         <Table className="admin-order-table">
           <TableHead className="admin-order-table-header">
             <TableRow className="admin-order-header-table-row">

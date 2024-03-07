@@ -6,6 +6,7 @@ import useAuthStore from "../../zustand/AuthStore";
 import { Dialog, DialogContent } from "@mui/material";
 import { useState } from "react";
 import { useCartStore } from "../../zustand/CartStore";
+import { PatternFormat } from "react-number-format";
 
 import gcash from "../../assets/gcash.jpg";
 import bpi from "../../assets/bpi.jpg";
@@ -161,10 +162,11 @@ const Checkout = () => {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
-        <input
-          type="text"
+
+        <PatternFormat
+          format="###########"
+          mask="_"
           placeholder="Contact Number"
-          value={contactNumber}
           onChange={(e) => setContactNumber(e.target.value)}
         />
         {/* TODO */}
@@ -178,7 +180,7 @@ const Checkout = () => {
           <option value="bdo">BDO</option>
         </select>
         <button
-          disabled={total === 0}
+          disabled={total === 0 || address === "" || contactNumber === ""}
           className="checkout-btn"
           style={{ padding: "10px" }}
           onClick={handlePlaceOrder}

@@ -118,7 +118,7 @@ const AdminUpdateProductVariation = ({
   };
 
   return (
-    <div className="update-product">
+    <div className="update-product" style={{ width: "400px" }}>
       <div className="update-product-image-container">
         <img
           src={

@@ -1,5 +1,7 @@
 import "./AdminOrders.css";
 import {
+  Dialog,
+  DialogContent,
   Table,
   TableBody,
   TableCell,
@@ -13,8 +15,12 @@ import { useQuery } from "react-query";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const AdminOrders = () => {
+  const [receipt, setReceipt] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   const { data } = useQuery<OrderInterface[]>({
     queryKey: ["AdminOrders"],
     queryFn: () =>
@@ -24,7 +30,6 @@ const AdminOrders = () => {
   });
 
   if (data && data.length > 0) {
-   
     data.sort(
       (a, b) =>
         new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
@@ -51,6 +56,11 @@ const AdminOrders = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const toggleReceiptImage = (receiptImage: string) => {
+    setReceipt(receiptImage);
+    setIsModalOpen(true);
   };
 
   return (
@@ -90,6 +100,10 @@ const AdminOrders = () => {
               </TableCell>
 
               <TableCell className="table-header" align="center">
+                Receipt
+              </TableCell>
+
+              <TableCell className="table-header" align="center">
                 Action Button
               </TableCell>
             </TableRow>
@@ -119,12 +133,22 @@ const AdminOrders = () => {
                     <option value="Pending">Pending</option>
                     <option value="Completed">Completed</option>
                     <option value="Cancelled">Cancelled</option>
-                    <option value="Cancelled">Return</option>
-                    <option value="Cancelled">Return and Refund</option>
                   </select>
                 </TableCell>
                 <TableCell className="table-header" align="center">
                   {moment(item.orderDate).format("YYYY-MM-DD hh:mm A")}
+                </TableCell>
+                <TableCell className="table-header" align="center">
+                  <img
+                    src={item.receipt}
+                    alt=""
+                    style={{
+                      width: "50px",
+                      height: "100px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => toggleReceiptImage(item.receipt)}
+                  />
                 </TableCell>
                 <TableCell className="table-header" align="center">
                   <Link to={`/admin/orders/${item.id}`}>
@@ -141,6 +165,15 @@ const AdminOrders = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <DialogContent>
+          <img
+            src={receipt}
+            alt=""
+            style={{ height: "650px", width: "300px" }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ProductInterface } from "../../Types";
 import { toast } from "react-toastify";
+import ImageUploading, { ImageListType } from "react-images-uploading";
 
 interface updateProductInterface {
   toggleModalUpdateProduct: () => void;
@@ -14,7 +15,7 @@ const AdminUpdateProduct = ({
   toggleModalUpdateProduct,
   paramsId,
 }: updateProductInterface) => {
-  const [imageFile, setImageFile] = useState<string>("");
+  const [image, setImage] = useState<ImageListType>([]);
   const [singleProductData, setSingleProductData] =
     useState<ProductInterface>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -24,6 +25,7 @@ const AdminUpdateProduct = ({
   const [description, setDescription] = useState<string>("");
   const [productImage, setProductImage] = useState<string>("");
   const [isAd, setIsAd] = useState<string>("");
+  const maxNumber = 1;
 
   useEffect(() => {
     const fetch = async () => {
@@ -45,30 +47,39 @@ const AdminUpdateProduct = ({
     setIsAd(singleProductData?.isAd || "false");
   }, [singleProductData, paramsId]);
 
-  const fileTypeChecking = (e: any) => {
-    var fileInput = document.getElementById("file-upload") as HTMLInputElement;
-    var filePath = fileInput.value;
+  // const fileTypeChecking = (e: any) => {
+  //   var fileInput = document.getElementById("file-upload") as HTMLInputElement;
+  //   var filePath = fileInput.value;
 
-    // Allowing file type
-    var allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
-    // |\.pdf|\.tex|\.txt|\.rtf|\.wps|\.wks|\.wpd
+  //   var allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
 
-    if (!allowedExtensions.exec(filePath)) {
-      alert("Invalid file type");
-      fileInput.value = "";
-      return false;
-    }
+  //   if (!allowedExtensions.exec(filePath)) {
+  //     alert("Invalid file type");
+  //     fileInput.value = "";
+  //     return false;
+  //   }
 
-    setImageFile(e.target.files[0]);
+  //   setImageFile(e.target.files[0]);
+  // };
+
+  console.log("image length: ", image.length);
+
+  const onChange = (
+    imageList: ImageListType,
+    addUpdateIndex: number[] | undefined
+  ) => {
+    // data for submit
+    console.log(imageList, addUpdateIndex);
+    setImage(imageList);
   };
 
   const handleUpdateProduct = async (e: any) => {
     setLoading(true);
     e.preventDefault();
     try {
-      if (imageFile !== "") {
+      if (image.length !== 0) {
         const data = new FormData();
-        data.append("file", imageFile);
+        data.append("file", image[0]?.file || "");
         data.append("upload_preset", "upload");
         const uploadRes = await axios.post(
           "https://api.cloudinary.com/v1_1/alialcantara/image/upload",
@@ -81,7 +92,7 @@ const AdminUpdateProduct = ({
           {
             barcode: barcode,
             productName: productName,
-            imageUrl: url,
+            productImage: url,
             description: description,
             isAd: isAd,
           }
@@ -115,8 +126,8 @@ const AdminUpdateProduct = ({
   };
 
   return (
-    <div className="update-product">
-      <div className="update-product-image-container">
+    <div className="update-product" style={{ width: "400px" }}>
+      {/* <div className="update-product-image-container">
         <img
           src={
             imageFile
@@ -137,7 +148,58 @@ const AdminUpdateProduct = ({
             style={{ display: "none" }}
           />
         </label>
-      </div>
+      </div> */}
+
+      <ImageUploading
+        multiple
+        value={image}
+        onChange={onChange}
+        maxNumber={maxNumber}
+        dataURLKey="data_url"
+      >
+        {({
+          imageList,
+          onImageUpload,
+          onImageUpdate,
+          onImageRemove,
+          isDragging,
+          dragProps,
+        }) => (
+          // write your building UI
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
+            <button
+              className="text-xs text-center w-[300px] p-3 border-dashed border-[1px] mt-2 mb-2"
+              style={isDragging ? { color: "red" } : undefined}
+              onClick={onImageUpload}
+              {...dragProps}
+            >
+              Click to Upload Image
+            </button>
+            {image.length === 0 ? (
+              <img src={productImage} alt="" className="addcategory-img" />
+            ) : (
+              imageList.map((image, index) => (
+                <div key={index} className="image-item">
+                  <img
+                    src={image["data_url"]}
+                    alt=""
+                    className="addcategory-img"
+                  />
+                  <div
+                    className="image-item__btn-wrapper"
+                    style={{ display: "flex", gap: "10px" }}
+                  >
+                    <button onClick={() => onImageUpdate(index)}>Update</button>
+                    <button onClick={() => onImageRemove(index)}>Remove</button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </ImageUploading>
 
       <div className="update-product-input-container">
         <div className="update-product-itemlist">

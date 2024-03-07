@@ -4,6 +4,8 @@ import { OrderInterface, OrderProductInterface } from "../../Types";
 import UploadReceipt from "../clientUploadReceipt/UploadReceipt";
 import moment from "moment";
 import { Dialog, DialogContent } from "@mui/material";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 interface IOrderData {
   orderData: OrderInterface;
@@ -19,6 +21,28 @@ const ClientOrderCard = ({ orderData }: IOrderData) => {
 
   const toggleOpenUploadReceipt = () => {
     setOpenUploadReceipt(!openUploadReceipt);
+  };
+
+  const handleChangeStatusToRefund = async (id: string) => {
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_APP_BASE_URL}/api/order/updateStatus/${id}`,
+        {
+          status: "Return and Refund",
+        }
+      );
+      toast(`Successfully request Return and Refund!`, {
+        type: "success",
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   console.log(orderListJson);
@@ -94,6 +118,14 @@ const ClientOrderCard = ({ orderData }: IOrderData) => {
         >
           Upload Receipt
         </button>
+        {orderData.status === "Pending" && (
+          <button
+            className="ordercard-uploadbtn"
+            onClick={() => handleChangeStatusToRefund(orderData.id)}
+          >
+            Return and Refund
+          </button>
+        )}
       </div>
       <Dialog open={openUploadReceipt} onClose={toggleOpenUploadReceipt}>
         <DialogContent>

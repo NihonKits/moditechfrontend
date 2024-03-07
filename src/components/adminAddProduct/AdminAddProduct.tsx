@@ -2,13 +2,18 @@ import axios from "axios";
 import "./AdminAddProduct.css";
 import { Close, Check } from "@mui/icons-material";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import ImageUploading, { ImageListType } from "react-images-uploading";
 
 interface props {
   toggleProductModal: () => void;
 }
 
+const maxNumber = 1;
+
 const AdminAddProduct = ({ toggleProductModal }: props) => {
-  const [ImageFile, setImageFile] = useState<string>("");
+  // const [ImageFile, setImageFile] = useState<string>("");
+  const [image, setImage] = useState<ImageListType>([]);
   // const [addProductInfo, setAddProductInfo] = useState<ProductInterface>({
   //   id: "",
   //   productName: "",
@@ -37,19 +42,26 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
   //   }));
   // };
 
+  const onChange = (
+    imageList: ImageListType,
+    addUpdateIndex: number[] | undefined
+  ) => {
+    // data for submit
+    console.log(imageList, addUpdateIndex);
+    setImage(imageList);
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
       const data = new FormData();
-      data.append("file", ImageFile);
+      data.append("file", image[0]?.file || "");
       data.append("upload_preset", "upload");
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/alialcantara/image/upload",
         data
       );
       const { url } = uploadRes.data;
-
-      console.log(url);
 
       await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/api/product/create`,
@@ -61,15 +73,15 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
         }
       );
       setLoading(false);
-      //   toast.success("Sucessfully added product!", {
-      //     position: "bottom-center",
-      //     autoClose: 2000,
-      //     hideProgressBar: false,
-      //     closeOnClick: true,
-      //     pauseOnHover: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //   });
+      toast.success("Sucessfully added product!", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
 
       setTimeout(() => {
         window.location.reload();
@@ -80,26 +92,26 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
     }
   };
 
-  const fileTypeChecking = (e: any) => {
-    var fileInput = document.getElementById("file-upload") as HTMLInputElement;
-    var filePath = fileInput.value;
+  // const fileTypeChecking = (e: any) => {
+  //   var fileInput = document.getElementById("file-upload") as HTMLInputElement;
+  //   var filePath = fileInput.value;
 
-    var allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
+  //   var allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
 
-    if (!allowedExtensions.exec(filePath)) {
-      alert("Invalid file type");
-      fileInput.value = "";
-      return false;
-    }
+  //   if (!allowedExtensions.exec(filePath)) {
+  //     alert("Invalid file type");
+  //     fileInput.value = "";
+  //     return false;
+  //   }
 
-    setImageFile(e.target.files[0]);
-  };
+  //   setImageFile(e.target.files[0]);
+  // };
 
   return (
     <div className="addproduct">
       <div style={{ padding: "10px 0", fontSize: "20px" }}>Add Product</div>
       <hr style={{ marginBottom: "20px" }} />
-      <div className="upload-image-container">
+      {/* <div className="upload-image-container">
         <img
           src={
             ImageFile
@@ -120,7 +132,55 @@ const AdminAddProduct = ({ toggleProductModal }: props) => {
             style={{ display: "none" }}
           />
         </label>
-      </div>
+      </div> */}
+
+      <ImageUploading
+        multiple
+        value={image}
+        onChange={onChange}
+        maxNumber={maxNumber}
+        dataURLKey="data_url"
+      >
+        {({
+          imageList,
+          onImageUpload,
+          onImageUpdate,
+          onImageRemove,
+          isDragging,
+          dragProps,
+        }) => (
+          // write your building UI
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
+            <button
+              className="text-xs text-center w-[300px] p-3 border-dashed border-[1px] mt-2 mb-2"
+              style={isDragging ? { color: "red" } : undefined}
+              onClick={onImageUpload}
+              {...dragProps}
+            >
+              Click to Upload Image
+            </button>
+
+            {imageList.map((image, index) => (
+              <div key={index} className="image-item">
+                <img
+                  src={image["data_url"]}
+                  alt=""
+                  className="addcategory-img"
+                />
+                <div
+                  className="image-item__btn-wrapper"
+                  style={{ display: "flex", gap: "10px" }}
+                >
+                  <button onClick={() => onImageUpdate(index)}>Update</button>
+                  <button onClick={() => onImageRemove(index)}>Remove</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </ImageUploading>
 
       <section
         style={{

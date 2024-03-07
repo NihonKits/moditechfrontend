@@ -90,14 +90,6 @@ const Navbar = () => {
           >
             <span className="nav-link-span">SHOP</span>
           </Link>
-          {userData?.userRole === "ROLE_USER" && (
-            <Link
-              to="/client/reservations"
-              style={{ textDecoration: "none", color: "#f5ffff" }}
-            >
-              <span className="nav-link-span">SERVICE RESERVATION</span>
-            </Link>
-          )}
           {userData?.userRole === "ROLE_ADMIN" && (
             <>
               <div className="nav-dropdown" onClick={toggleManagementDropdown}>
@@ -129,12 +121,6 @@ const Navbar = () => {
                       to="/admin/chat-support"
                     >
                       <span>CHAT SUPPORT MANAGEMENT</span>
-                    </Link>
-                    <Link
-                      style={{ textDecoration: "none", color: "#f5ffff" }}
-                      to="/admin/reservations"
-                    >
-                      <span>RESERVATION MANAGEMENT</span>
                     </Link>
                   </div>
                 )}
