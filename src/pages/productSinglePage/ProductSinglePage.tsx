@@ -98,7 +98,7 @@ const ProductSinglePage = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      ₱{selectedVariation?.price}
+                      ₱{selectedVariation?.price}.00
                     </p>
                   </div>
                   <div className="filter-container">

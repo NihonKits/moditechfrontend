@@ -1,11 +1,12 @@
 .shop-section {
   width: 100vw;
-  height: calc(100vh - 50px);
+  height: 100%;
 
   display: flex;
   align-items: center;
   flex-direction: column;
   margin-top: 50px;
+  margin-bottom: 20px;
 }
 
 .shop-section-container {
