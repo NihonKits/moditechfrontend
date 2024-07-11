@@ -76,7 +76,16 @@ const AdminProductVariation = () => {
         className="product"
         style={{ maxWidth: "1100px", width: "100%" }}
       >
-        <button className="product-add-btn" onClick={() => setOpenAdd(true)}>
+        <button
+          style={{
+            border: "none",
+            padding: "20px 40px",
+            borderRadius: "10px",
+            marginBottom: "10px",
+          }}
+          className="product-add-btn"
+          onClick={() => setOpenAdd(true)}
+        >
           Add Product Variation
         </button>
         <Table className="admin-order-table">
@@ -96,6 +105,12 @@ const AdminProductVariation = () => {
               </TableCell>
               <TableCell className="table-header" align="center">
                 Quantity
+              </TableCell>
+              <TableCell className="table-header" align="center">
+                Sold
+              </TableCell>
+              <TableCell className="table-header" align="center">
+                Total Sales
               </TableCell>
               <TableCell className="table-header" align="center">
                 Actions
@@ -135,6 +150,12 @@ const AdminProductVariation = () => {
                     }}
                   >
                     {variation?.quantity}
+                  </TableCell>
+                  <TableCell className="table-header" align="center">
+                    {variation.sold}
+                  </TableCell>
+                  <TableCell className="table-header" align="center">
+                    {variation.price * variation.sold}
                   </TableCell>
                   <TableCell className="table-header" align="center">
                     <div

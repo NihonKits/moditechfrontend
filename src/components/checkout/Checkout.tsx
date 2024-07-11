@@ -11,6 +11,8 @@ import { PatternFormat } from "react-number-format";
 import gcash from "../../assets/gcash.jpg";
 import bpi from "../../assets/bpi.jpg";
 import bdo from "../../assets/bdo.jpg";
+import { UserInterface } from "../../Types";
+import { useQuery } from "react-query";
 
 const Checkout = () => {
   const user = useAuthStore((state) => state.user);
@@ -23,8 +25,19 @@ const Checkout = () => {
   const [selectedModePayment, setSelectedModePayment] =
     useState<string>("gcash");
   const [open, setOpen] = useState<boolean>(false);
-  const [address, setAddress] = useState<string>("");
+  const [addressLine1, setAddressLine1] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [country, setCountry] = useState<string>("");
+  const [postalCode, setPostalCode] = useState<string>("");
   const [contactNumber, setContactNumber] = useState<string>("");
+
+  const { data: userData } = useQuery<UserInterface>({
+    queryKey: ["checkout-userdata"],
+    queryFn: () =>
+      axios
+        .get(`${import.meta.env.VITE_APP_BASE_URL}/api/user/${user}`)
+        .then((res) => res.data),
+  });
 
   const handleCloseBtn = () => {
     setOpen(false);
@@ -41,8 +54,16 @@ const Checkout = () => {
         variationIndexes: [item.variationIndex],
       })),
       email: user,
-      address: address,
-      contactNumber: contactNumber,
+      address: addressLine1
+        ? addressLine1
+        : userData?.addressLine1 + city
+        ? city
+        : userData?.city + country
+        ? country
+        : userData?.country + postalCode
+        ? postalCode
+        : userData?.postalCode,
+      contactNumber: contactNumber ? contactNumber : userData?.contactNumber,
       totalPrice: total,
       orderList: itemsToString,
       status: "Pending",
@@ -155,18 +176,40 @@ const Checkout = () => {
       </h1>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        {/* TODO */}
+        {/* TODO edit the values and onchange*/}
         <input
           type="text"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
+          placeholder="Address Line 1"
+          defaultValue={userData?.addressLine1}
+          onChange={(e) => setAddressLine1(e.target.value)}
+        />
+
+        <input
+          type="text"
+          placeholder="City"
+          defaultValue={userData?.city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+
+        <input
+          type="text"
+          placeholder="Country"
+          defaultValue={userData?.country}
+          onChange={(e) => setCountry(e.target.value)}
+        />
+
+        <input
+          type="text"
+          placeholder="Postal Code"
+          defaultValue={userData?.postalCode}
+          onChange={(e) => setPostalCode(e.target.value)}
         />
 
         <PatternFormat
           format="###########"
           mask="_"
           placeholder="Contact Number"
+          value={userData?.contactNumber}
           onChange={(e) => setContactNumber(e.target.value)}
         />
         {/* TODO */}
@@ -179,8 +222,15 @@ const Checkout = () => {
           <option value="bpi">BPI</option>
           <option value="bdo">BDO</option>
         </select>
+        {/* 
+        ||
+            addressLine1 === "" ||
+            city === "" ||
+            country === "" ||
+            postalCode === "" ||
+            contactNumber === "" */}
         <button
-          disabled={total === 0 || address === "" || contactNumber === ""}
+          disabled={total === 0}
           className="checkout-btn"
           style={{ padding: "10px" }}
           onClick={handlePlaceOrder}

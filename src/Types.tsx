@@ -8,12 +8,25 @@ export interface RegistrationInterface {
   lastName: string;
   email: string;
   password: string;
+  addressLine1: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  contactNumber: string;
 }
 
 export interface UserInterface {
   id: string;
   email: string;
+  firstName: string;
+  lastName: string;
   userRole: string;
+  imageUrl: string;
+  addressLine1: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  contactNumber: string;
 }
 
 export interface ProductInterface {
@@ -140,3 +153,5 @@ export const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+export const maxNumber = 1;

@@ -148,10 +148,12 @@ const Navbar = () => {
         <section className="nav-action-container">
           {user ? (
             <div className="navbar-user-logout-container">
-              <Person
-                sx={{ color: "#f5ffff", fontSize: "33px" }}
-                id="clickable"
-              />
+              <Link to="/profile" style={{ textDecoration: "none" }}>
+                <Person
+                  sx={{ color: "#f5ffff", fontSize: "33px" }}
+                  id="clickable"
+                />
+              </Link>
               <Tooltip
                 anchorSelect="#clickable"
                 clickable

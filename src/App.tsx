@@ -18,6 +18,7 @@ import { UserInterface } from "./Types";
 import AdminProductVariation from "./pages/adminProductVariation/AdminProductVariation";
 import ProductSinglePage from "./pages/productSinglePage/ProductSinglePage";
 import ShopSection from "./components/shop_section/ShopSection";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   const user = useAuthStore((state) => state.user);
@@ -46,7 +47,10 @@ function App() {
           path="/client/orders"
           element={!userIsAdmin ? <ClientOrders /> : <Navigate to="/" />}
         />
-
+        <Route
+          path="/profile"
+          element={user ? <Profile /> : <Navigate to="/" />}
+        />
         <Route path="/client/product/:id" element={<ProductSinglePage />} />
         <Route path="/client/shop" element={<ShopSection />} />
         <Route

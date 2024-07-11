@@ -37,8 +37,7 @@
 
 .nav-action-container {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+
   gap: 20px;
 }
 

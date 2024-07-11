@@ -11,6 +11,11 @@ const Registration = ({ toggleRegistrationModal }: any) => {
       firstName: "",
       email: "",
       password: "",
+      addressLine1: "",
+      city: "",
+      contactNumber: "",
+      country: "",
+      postalCode: "",
     });
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -111,6 +116,43 @@ const Registration = ({ toggleRegistrationModal }: any) => {
           onChange={onChangeHandler}
         />
       </div>
+
+      <div className="input-container">
+        <input
+          type="text"
+          placeholder="Address Line1"
+          name="addressLine1"
+          onChange={onChangeHandler}
+        />
+      </div>
+
+      <div className="input-container">
+        <input
+          type="text"
+          placeholder="City"
+          name="city"
+          onChange={onChangeHandler}
+        />
+      </div>
+
+      <div className="input-container">
+        <input
+          type="text"
+          placeholder="Country"
+          name="country"
+          onChange={onChangeHandler}
+        />
+      </div>
+
+      <div className="input-container">
+        <input
+          type="text"
+          placeholder="Postal Code"
+          name="postalCode"
+          onChange={onChangeHandler}
+        />
+      </div>
+
       <div className="input-container">
         <input
           type="password"

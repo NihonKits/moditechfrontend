@@ -4,12 +4,11 @@ import { Close, Check } from "@mui/icons-material";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import ImageUploading, { ImageListType } from "react-images-uploading";
+import { maxNumber } from "../../Types";
 
 interface props {
   toggleProductModal: () => void;
 }
-
-const maxNumber = 1;
 
 const AdminAddProduct = ({ toggleProductModal }: props) => {
   // const [ImageFile, setImageFile] = useState<string>("");

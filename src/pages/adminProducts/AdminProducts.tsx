@@ -110,7 +110,9 @@ const AdminProducts = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
+        <span style={{ fontSize: "18px" }}>
+          {filtered ? filtered?.length : 0} products count
+        </span>
         <Table className="admin-order-table">
           <TableHead className="admin-order-table-header">
             <TableRow className="admin-order-header-table-row">
