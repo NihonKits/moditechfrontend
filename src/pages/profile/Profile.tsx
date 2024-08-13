@@ -21,16 +21,18 @@ const Profile = () => {
 
   const updateProfile = async () => {
     try {
-      // TODO: put cloudinary upload here then timeout then after that thats when it will have to put
-
-      const data = new FormData();
-      data.append("file", image[0]?.file || "");
-      data.append("upload_preset", "upload");
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/alialcantara/image/upload",
-        data
-      );
-      const { url } = uploadRes.data;
+      if (image.length === 0) {
+        console.log("there is no updated image");
+      } else {
+        const data = new FormData();
+        data.append("file", image[0]?.file || "");
+        data.append("upload_preset", "upload");
+        const uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/alialcantara/image/upload",
+          data
+        );
+        var { url } = uploadRes.data;
+      }
 
       await axios.put(
         `${import.meta.env.VITE_APP_BASE_URL}/api/user/update/${user}`,
@@ -76,7 +78,6 @@ const Profile = () => {
     imageList: ImageListType,
     addUpdateIndex: number[] | undefined
   ) => {
-    // data for submit
     console.log(imageList, addUpdateIndex);
     setImage(imageList);
   };
@@ -90,56 +91,6 @@ const Profile = () => {
         </div>
         <hr />
         <div className="profile-body-container">
-          {/* <img
-            src={data?.imageUrl}
-            alt="profile picture"
-         
-          /> */}
-
-          {/*     <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-
-              marginBottom: "10px",
-            }}
-          >
-            <img
-              src={
-                imageFile
-                  ? URL.createObjectURL(
-                      new Blob([imageFile], { type: "image/jpeg" })
-                    )
-                  : data?.imageUrl
-              }
-              alt="AddImage"
-              style={{ width: "200px", height: "auto" }}
-            />
-            <label
-              htmlFor="file-upload"
-              className="text-xs text-center w-[300px] p-3 border-dashed border-[1px] mt-2"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                border: "1px solid black",
-                padding: "10px",
-                borderRadius: "5px",
-                width: "200px",
-                margin: "10px 0",
-                cursor: "pointer",
-              }}
-            >
-              <FileUpload /> Update Profile Picture
-              <input
-                type="file"
-                id="file-upload"
-                onChange={fileTypeChecking}
-                style={{ display: "none" }}
-              />
-            </label>
-          </div>
-          */}
-
           <ImageUploading
             multiple
             value={image}
@@ -150,11 +101,9 @@ const Profile = () => {
             {({
               imageList,
               onImageUpload,
-              // onImageUpdate,
-              // onImageRemove,
+
               dragProps,
             }) => (
-              // write your building UI
               <div
                 style={{
                   display: "flex",
@@ -166,7 +115,12 @@ const Profile = () => {
                   <img
                     src={data?.imageUrl}
                     alt=""
-                    style={{ width: "200px", height: "auto" }}
+                    style={{
+                      width: "200px",
+                      height: "200px",
+                      objectFit: "cover",
+                      borderRadius: "100%",
+                    }}
                   />
                 ) : (
                   imageList.map((image, index) => (
@@ -174,19 +128,13 @@ const Profile = () => {
                       <img
                         src={image["data_url"]}
                         alt=""
-                        style={{ width: "200px", height: "auto" }}
+                        style={{
+                          width: "200px",
+                          height: "200px",
+                          objectFit: "contain",
+                          borderRadius: "100px",
+                        }}
                       />
-                      {/* <div
-                        className="image-item__btn-wrapper"
-                        style={{ display: "flex", gap: "10px" }}
-                      >
-                        <button onClick={() => onImageUpdate(index)}>
-                          Update
-                        </button>
-                        <button onClick={() => onImageRemove(index)}>
-                          Remove
-                        </button>
-                      </div> */}
                     </div>
                   ))
                 )}
@@ -211,7 +159,15 @@ const Profile = () => {
 
           <label className="profile-label">
             Email:
-            <span>{data?.email}</span>
+            <span
+              style={{
+                border: "1px solid black",
+                padding: "10px",
+                borderRadius: "5px",
+              }}
+            >
+              {data?.email}
+            </span>
           </label>
           <label className="profile-label">
             First Name:
@@ -220,7 +176,7 @@ const Profile = () => {
                 height: "30px",
                 paddingLeft: "10px",
                 borderRadius: "5px",
-                width: "250px",
+                width: "500px",
               }}
               onChange={(e) => setFirstName(e.target.value)}
               type="text"
@@ -234,7 +190,7 @@ const Profile = () => {
                 height: "30px",
                 paddingLeft: "10px",
                 borderRadius: "5px",
-                width: "250px",
+                width: "500px",
               }}
               onChange={(e) => setLastName(e.target.value)}
               type="text"
@@ -248,7 +204,7 @@ const Profile = () => {
                 height: "30px",
                 paddingLeft: "10px",
                 borderRadius: "5px",
-                width: "250px",
+                width: "500px",
               }}
               onChange={(e) => setContactNumber(e.target.value)}
               type="text"
@@ -262,7 +218,7 @@ const Profile = () => {
                 height: "30px",
                 paddingLeft: "10px",
                 borderRadius: "5px",
-                width: "250px",
+                width: "500px",
               }}
               onChange={(e) => setAddressLine1(e.target.value)}
               type="text"
@@ -276,7 +232,7 @@ const Profile = () => {
                 height: "30px",
                 paddingLeft: "10px",
                 borderRadius: "5px",
-                width: "250px",
+                width: "500px",
               }}
               onChange={(e) => setCity(e.target.value)}
               type="text"
@@ -290,7 +246,7 @@ const Profile = () => {
                 height: "30px",
                 paddingLeft: "10px",
                 borderRadius: "5px",
-                width: "250px",
+                width: "500px",
               }}
               onChange={(e) => setCountry(e.target.value)}
               type="text"
@@ -304,7 +260,7 @@ const Profile = () => {
                 height: "30px",
                 paddingLeft: "10px",
                 borderRadius: "5px",
-                width: "250px",
+                width: "500px",
               }}
               onChange={(e) => setPostalCode(e.target.value)}
               type="text"
@@ -313,7 +269,12 @@ const Profile = () => {
           </label>
           <button
             onClick={updateProfile}
-            style={{ padding: "20px", width: "200px", borderRadius: "10px" }}
+            style={{
+              marginTop: "10px",
+              padding: "20px",
+              width: "515px",
+              borderRadius: "10px",
+            }}
           >
             Update
           </button>

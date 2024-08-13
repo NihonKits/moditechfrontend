@@ -54,16 +54,8 @@ const Checkout = () => {
         variationIndexes: [item.variationIndex],
       })),
       email: user,
-      address: addressLine1
-        ? addressLine1
-        : userData?.addressLine1 + city
-        ? city
-        : userData?.city + country
-        ? country
-        : userData?.country + postalCode
-        ? postalCode
-        : userData?.postalCode,
-      contactNumber: contactNumber ? contactNumber : userData?.contactNumber,
+      address: addressLine1 + city + country + postalCode,
+      contactNumber: contactNumber,
       totalPrice: total,
       orderList: itemsToString,
       status: "Pending",
@@ -135,6 +127,7 @@ const Checkout = () => {
             <label>
               Product Price:{" "}
               <b>
+                ₱
                 {
                   item.product?.productVariationsList[item?.variationIndex]
                     ?.price
@@ -158,6 +151,7 @@ const Checkout = () => {
             <label>
               Price:{" "}
               <b>
+                ₱
                 {item.product?.productVariationsList[item?.variationIndex]
                   ?.price * item?.quantity}
               </b>
@@ -172,7 +166,7 @@ const Checkout = () => {
         ))}
       </div>
       <h1>
-        TOTAL PRICE: <b>{total}</b>
+        TOTAL PRICE: <b> ₱{total}</b>
       </h1>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>

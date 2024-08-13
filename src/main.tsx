@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import "react-toastify/dist/ReactToastify.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 const queryClient = new QueryClient();
 

@@ -90,16 +90,6 @@ const FloatingChatWidget = () => {
 
     setIsLoading(true);
 
-    // const message: IMessage = {
-    //   id: (messages.length + 1).toString(),
-    //   name: user || "",
-    //   message: input,
-    //   isUser: true,
-    //   createdAt: new Date(),
-    //   isUserReadTheMessage: true,
-    //   isAdminReadTheMessage: false,
-    // };
-
     const message: any = {
       name: user || "",
       message: input,
@@ -130,7 +120,6 @@ const FloatingChatWidget = () => {
   };
 
   return (
-    // <>
     <div className={`floating-chat-widget ${isOpen ? "open" : ""}`}>
       <Badge
         badgeContent={userHasUnreadBadge}
@@ -160,13 +149,6 @@ const FloatingChatWidget = () => {
                     message.isUser ? "user-bubble" : "admin-bubble"
                   } chat-bubble`}
                 >
-                  {/* {message.isUser ? null : (
-                  <img
-                    src="admin-avatar.png"
-                    alt="Admin Avatar"
-                    className="avatar"
-                  />
-                )} */}
                   <div className="bubble">{message.message}</div>
                 </div>
               ))}

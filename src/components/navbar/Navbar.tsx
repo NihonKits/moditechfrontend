@@ -111,6 +111,12 @@ const Navbar = () => {
                     </Link>
                     <Link
                       style={{ textDecoration: "none", color: "#f5ffff" }}
+                      to="/admin/sales"
+                    >
+                      <span>SALES</span>
+                    </Link>
+                    <Link
+                      style={{ textDecoration: "none", color: "#f5ffff" }}
                       to="/admin/products"
                     >
                       <span>PRODUCT MANAGEMENT</span>

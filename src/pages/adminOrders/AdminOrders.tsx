@@ -16,10 +16,12 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { Search } from "@mui/icons-material";
 
 const AdminOrders = () => {
   const [receipt, setReceipt] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data } = useQuery<OrderInterface[]>({
     queryKey: ["AdminOrders"],
@@ -63,6 +65,10 @@ const AdminOrders = () => {
     setIsModalOpen(true);
   };
 
+  const filteredData = data?.filter((item) =>
+    item?.email?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  );
+
   return (
     <div
       style={{
@@ -77,6 +83,31 @@ const AdminOrders = () => {
         className="product"
         style={{ maxWidth: "1100px", width: "100%" }}
       >
+        <div
+          style={{
+            border: "2px solid black",
+            width: "95%",
+            display: "flex",
+            alignItems: "center",
+            paddingLeft: "20px",
+            borderRadius: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          <Search />
+          <input
+            style={{
+              width: "80%",
+              border: "none",
+              outline: "none",
+              padding: "20px",
+            }}
+            type="text"
+            placeholder="Search for Customer Name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
         <Table className="admin-order-table">
           <TableHead className="admin-order-table-header">
             <TableRow className="admin-order-header-table-row">
@@ -109,7 +140,7 @@ const AdminOrders = () => {
             </TableRow>
           </TableHead>
           <TableBody className="product-tablebody">
-            {data?.map((item) => (
+            {filteredData?.map((item) => (
               <TableRow key={item.id} className="admin-order-table-body-row">
                 <TableCell className="table-header" align="center">
                   {item.email}

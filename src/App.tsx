@@ -19,6 +19,7 @@ import AdminProductVariation from "./pages/adminProductVariation/AdminProductVar
 import ProductSinglePage from "./pages/productSinglePage/ProductSinglePage";
 import ShopSection from "./components/shop_section/ShopSection";
 import Profile from "./pages/profile/Profile";
+import SalesReport from "./pages/sales/SalesReport";
 
 function App() {
   const user = useAuthStore((state) => state.user);
@@ -73,10 +74,13 @@ function App() {
           path="/admin/chat-support"
           element={user ? <AdminSupport /> : <Navigate to="/" />}
         />
-
         <Route
           path="/admin/products/:id"
           element={user ? <AdminProductVariation /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/admin/sales"
+          element={user ? <SalesReport /> : <Navigate to="/" />}
         />
       </Routes>
       <ToastContainer />
